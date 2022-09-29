@@ -1,24 +1,30 @@
 package fi.metropolia.project.souvenirapp.view.screens
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Text
+import android.content.Context
+import android.util.Log
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
+import fi.metropolia.project.souvenirapp.R
+import fi.metropolia.project.souvenirapp.viewmodel.MapViewModel
+import org.osmdroid.views.MapView
 
 @Composable
-fun MapScreen() {
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .background(Color.Red)
-        .padding(50.dp)
-    ) {
-
+fun MapScreen(mapViewModel: MapViewModel) {
+    Box(modifier = Modifier.fillMaxHeight(0.9f)) {
+        AndroidView({ mapViewModel.map })
     }
-    Text("MAP", fontSize = 48.sp)
+}
+
+@Composable
+fun getMap(context: Context): MapView {
+    val map = remember {
+        MapView(context).apply {
+            id = R.id.map
+        }
+    }
+    return map
 }
