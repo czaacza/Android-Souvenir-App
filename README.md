@@ -13,5 +13,10 @@ Remember to always **communicate** about ending the work on a utility by calling
 ## App Architecture
 
 ### UI Structure
-UI Structure of our application is based on packages containing...
+UI Structure of our application is based on packages containing specific parts of UI:
+- **components** - reusable UI components such as buttons, input fields etc.
+- **navigation** - classes connected with navigating between different screens
+- **screens** - functions presenting different screens of our applications (map/list/create etc.)
+- **theme** - material design theme related files
+
 
