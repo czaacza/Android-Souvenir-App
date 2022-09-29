@@ -19,4 +19,7 @@ UI Structure of our application is based on packages containing specific parts o
 - **screens** - functions presenting different screens of our applications (map/list/create etc.)
 - **theme** - material design theme related files
 
-
+## Contributors
+- Mateusz Czarnecki ([czaacza](https://github.com/czaacza))
+- Julian Marc ([JulianMarc](https://github.com/JulianMarc))
+- Hugo Mater ([hugo66297](https://github.com/hugo66297))
