@@ -11,6 +11,10 @@ Remember to always **pull the master branch** containing the newest version of t
 Remember to always **communicate** about ending the work on a utility by calling a pull request or messaging the admin. This way, your version of the code can be merged to the master branch.
 
 ## App Architecture
+The application will be built in MVVM architecture. This means that the structure contains three main modules:
+- **model** - data and business login
+- **view** - UI display layer
+- **viewModel** - connection between model and view, providing lifecycle management
 
 ### UI Structure
 UI Structure of our application is based on packages containing specific parts of UI:
