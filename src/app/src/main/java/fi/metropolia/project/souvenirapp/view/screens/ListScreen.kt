@@ -1,4 +1,4 @@
-package fi.metropolia.project.souvenirapp.ui.screens
+package fi.metropolia.project.souvenirapp.view.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -12,13 +12,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun MapScreen() {
+fun ListScreen() {
     Column(modifier = Modifier
         .fillMaxSize()
-        .background(Color.Red)
+        .background(Color.Blue)
         .padding(50.dp)
     ) {
 
     }
-    Text("MAP", fontSize = 48.sp)
+    Text("LIST", fontSize = 48.sp)
 }

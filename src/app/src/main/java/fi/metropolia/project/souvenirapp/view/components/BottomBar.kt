@@ -1,10 +1,9 @@
-package fi.metropolia.project.souvenirapp.ui.components
+package fi.metropolia.project.souvenirapp.view.components
 
 import android.util.Log
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController

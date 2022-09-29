@@ -46,8 +46,13 @@ android {
 }
 
 dependencies {
+//    NAVIGATION
     def nav_version = "2.5.2"
     implementation "androidx.navigation:navigation-compose:$nav_version"
+
+//    OSMDROID (MAP)
+    implementation 'org.osmdroid:osmdroid-android:6.1.14'
+    implementation 'androidx.preference:preference-ktx:1.2.0'
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation "androidx.compose.ui:ui:$compose_version"

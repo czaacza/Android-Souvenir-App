@@ -1,12 +1,10 @@
-package fi.metropolia.project.souvenirapp.ui
+package fi.metropolia.project.souvenirapp.view
 
-import androidx.compose.material.BottomAppBar
-import androidx.compose.material.BottomNavigation
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.rememberNavController
-import fi.metropolia.project.souvenirapp.ui.components.BottomBar
-import fi.metropolia.project.souvenirapp.ui.navigation.BottomBarNavigation
+import fi.metropolia.project.souvenirapp.view.components.BottomBar
+import fi.metropolia.project.souvenirapp.view.navigation.BottomBarNavigation
 
 @Composable
 fun MainScreen() {

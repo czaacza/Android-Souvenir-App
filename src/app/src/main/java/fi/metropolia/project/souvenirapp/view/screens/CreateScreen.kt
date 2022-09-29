@@ -1,4 +1,4 @@
-package fi.metropolia.project.souvenirapp.ui.screens
+package fi.metropolia.project.souvenirapp.view.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column

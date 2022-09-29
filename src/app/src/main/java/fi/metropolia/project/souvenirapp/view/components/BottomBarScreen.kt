@@ -1,4 +1,4 @@
-package fi.metropolia.project.souvenirapp.ui.components
+package fi.metropolia.project.souvenirapp.view.components
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add

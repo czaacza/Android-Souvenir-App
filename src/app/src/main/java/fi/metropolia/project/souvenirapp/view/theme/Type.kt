@@ -1,4 +1,4 @@
-package fi.metropolia.project.souvenirapp.ui.theme
+package fi.metropolia.project.souvenirapp.view.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle
