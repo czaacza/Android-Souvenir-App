@@ -2,6 +2,7 @@ package fi.metropolia.project.souvenirapp.viewmodel
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.lifecycle.AndroidViewModel
