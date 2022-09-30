@@ -29,26 +29,29 @@ fun BottomBar(navController: NavHostController) {
     BottomNavigation(
         modifier = Modifier.fillMaxHeight(0.1f),
     ) {
-            screens.forEach { screen ->
-                BottomNavigationItem(
-                    label = {
-                        Text(text = screen.title, fontSize = 16.sp)
-                    },
-                    icon = {
-                        Icon(imageVector = screen.icon, contentDescription = "Icon", modifier = Modifier.size(30.dp))
-                    },
-                    unselectedContentColor = LocalContentColor.current.copy(ContentAlpha.disabled),
-                    selected = currentDestination?.hierarchy?.any {
-                        it.route == screen.route
-                    } == true,
-                    onClick = {
-                        Log.d("DBG", "currentDest: ${currentDestination?.hierarchy}")
+        screens.forEach { screen ->
+            BottomNavigationItem(
+                label = {
+                    Text(text = screen.title, fontSize = 16.sp)
+                },
+                icon = {
+                    Icon(
+                        imageVector = screen.icon,
+                        contentDescription = "Icon",
+                        modifier = Modifier.size(30.dp)
+                    )
+                },
+                unselectedContentColor = LocalContentColor.current.copy(ContentAlpha.disabled),
+                selected = currentDestination?.hierarchy?.any {
+                    it.route == screen.route
+                } == true,
+                onClick = {
                         navController.navigate(route = screen.route) {
                             popUpTo(navController.graph.findStartDestination().id)
                             launchSingleTop = true
                         }
-                    }
-                )
-            }
+                }
+            )
+        }
     }
 }
