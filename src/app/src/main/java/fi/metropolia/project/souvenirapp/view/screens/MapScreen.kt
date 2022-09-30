@@ -1,20 +1,14 @@
 package fi.metropolia.project.souvenirapp.view.screens
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.material.Button
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.navigation.NavController
 import fi.metropolia.project.souvenirapp.R
 import fi.metropolia.project.souvenirapp.viewmodel.MapViewModel
-import org.osmdroid.tileprovider.tilesource.TileSourceFactory
-import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 
 @Composable

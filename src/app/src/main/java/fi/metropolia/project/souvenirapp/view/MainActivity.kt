@@ -1,9 +1,14 @@
 package fi.metropolia.project.souvenirapp.view
 
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
 import androidx.preference.PreferenceManager
+import fi.metropolia.project.souvenirapp.model.Memory
+import fi.metropolia.project.souvenirapp.model.ShowMemories
 import fi.metropolia.project.souvenirapp.view.screens.getMap
 import fi.metropolia.project.souvenirapp.view.theme.SouvenirAppTheme
 import fi.metropolia.project.souvenirapp.viewmodel.MapViewModel
@@ -15,8 +20,8 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Configuration.getInstance().load(application, PreferenceManager.getDefaultSharedPreferences(application))
-
+        Configuration.getInstance()
+            .load(application, PreferenceManager.getDefaultSharedPreferences(application))
         setContent {
             mapViewModel = MapViewModel(application, getMap(context = applicationContext))
             SouvenirAppTheme {
