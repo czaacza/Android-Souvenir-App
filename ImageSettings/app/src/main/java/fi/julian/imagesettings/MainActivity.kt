@@ -59,12 +59,16 @@ class MainActivity : ComponentActivity() {
                     TextField(txtLocation.value, onValueChange = {txtLocation.value = it})
                 }
             }
-            Row(){
-                Button(onClick = { /*TODO*/ }) {
-                    Text(stringResource(R.string.cancel))
-                }
-                Button(onClick = { /*TODO*/ }) {
-                    Text(stringResource(R.string.done))
+            Row(modifier = Modifier.fillMaxWidth()){
+                Spacer(modifier = Modifier.size(220.dp))
+                Row(){
+                    Button(onClick = { /*TODO*/ }) {
+                        Text(stringResource(R.string.cancel))
+                    }
+                    Spacer(modifier = Modifier.size(10.dp))
+                    Button(onClick = { /*TODO*/ }) {
+                        Text(stringResource(R.string.done))
+                    }
                 }
             }
         }
