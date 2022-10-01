@@ -3,14 +3,9 @@ package fi.metropolia.project.souvenirapp.view
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.Image
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.preference.PreferenceManager
-import fi.metropolia.project.souvenirapp.model.ShowMemories
-import fi.metropolia.project.souvenirapp.model.createSampleMemories
 import fi.metropolia.project.souvenirapp.view.screens.getMap
 import fi.metropolia.project.souvenirapp.view.theme.SouvenirAppTheme
 import fi.metropolia.project.souvenirapp.viewmodel.MapViewModel
