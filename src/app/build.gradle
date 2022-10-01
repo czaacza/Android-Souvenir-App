@@ -44,11 +44,14 @@ android {
         }
     }
 }
-
+apply plugin: "kotlin-kapt"
 dependencies {
 //  NAVIGATION
     def nav_version = "2.5.2"
     implementation "androidx.navigation:navigation-compose:$nav_version"
+
+//  JETPACK COMPOSE COIL
+    implementation("io.coil-kt:coil-compose:2.0.0")
 
 //  OSMDROID (MAP)
     implementation 'org.osmdroid:osmdroid-android:6.1.14'
@@ -59,14 +62,18 @@ dependencies {
 
 //  ViewModel and LiveData
     def lifecycle_version = "2.5.1"
-//  ViewModel
     implementation("androidx.fragment:fragment:1.5.3")
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
-//  ViewModel utilities for Compose
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"
-//  LiveData
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
     implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
+
+//  ROOM DATABASE
+    def roomVersion = "2.4.0"
+    implementation "androidx.room:room-runtime:$roomVersion"
+    annotationProcessor "androidx.room:room-compiler:$roomVersion"
+    kapt "androidx.room:room-compiler:$roomVersion"
+    implementation "androidx.room:room-ktx:$roomVersion"
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation "androidx.compose.ui:ui:$compose_version"
