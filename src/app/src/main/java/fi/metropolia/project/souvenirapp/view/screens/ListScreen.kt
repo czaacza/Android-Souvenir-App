@@ -1,24 +1,134 @@
 package fi.metropolia.project.souvenirapp.view.screens
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.outlined.Face
+import androidx.compose.material.icons.outlined.LocationOn
+import androidx.compose.material.icons.outlined.MoreVert
+import androidx.compose.material.icons.rounded.LocationOn
+import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.Paint
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.fontResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.legacy.coreutils.R
+import java.io.IOException
+import java.util.*
+
 
 @Composable
-fun ListScreen() {
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .background(Color.Blue)
-        .padding(50.dp)
+fun ListScreen(
+) {
+    val imageBitmap = remember {
+        mutableStateOf<ImageBitmap?>(null)
+    }
+    val context = LocalContext.current
+    val bitmap: Bitmap? = context.assetsToBitmap("strawberries.jpg")
+    bitmap?.apply {
+        imageBitmap.value = this.asImageBitmap()
+    }
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            /*.fillMaxHeight(0.22F)*/
+            .padding(15.dp),
+        elevation = 20.dp
     ) {
+        Column(modifier = Modifier.padding(5.dp)) {
+            Text(
+                text = "TITLE",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 5.dp),
+                style = TextStyle(
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center
+                )
+            )
+            Row() {
+                imageBitmap.value?.apply {
+                    Image(
+                        bitmap = this,
+                        contentDescription ="strawberrie",
+                        /*contentScale = ContentScale.Crop,*/
+                        modifier = Modifier
+                            .padding(start = 10.dp, bottom = 10.dp)
+                            .fillMaxWidth(0.3F)
+                            .clip(RoundedCornerShape(10.dp))
+                            /*.border(
+                                3.dp,
+                                Color(0xFF000000),
+                                RoundedCornerShape(10.dp)
+                            )*/
+                        )
+                }
+                Text(text = "DESCRIPTION",modifier = Modifier
+                    .align(CenterVertically)
+                    .padding(start = 10.dp, end = 5.dp, bottom = 10.dp)
+                )
+            }
+            /*Icon(
+                painter = painterResource(id= R.drawable.ic_calendar),
+                contentDescription = null
+            )*/
+            Row(modifier = Modifier
+                .fillMaxWidth()
+            ) {
+                //Icon(painter = painterResource(id = R.drawable.c))
+                Row(Modifier.fillMaxWidth(0.3F)) {
+                    Icon(Icons.Outlined.LocationOn, contentDescription = null)
+                    Text(text = " HERE ")
+                }
+                Row(Modifier.fillMaxWidth(0.4F)) {
+                    Icon(Icons.Outlined.Face, contentDescription = null)
+                    Text(text = " DATE ")
+                }
+                Row(Modifier.fillMaxWidth(0.5F)) {
+                    Icon(Icons.Outlined.MoreVert, contentDescription = null)
+                    Text(text = " LIGHT ")
+                }
+            }
+        }
 
     }
-    Text("LIST", fontSize = 48.sp)
 }
+    private fun Context.assetsToBitmap(fileName: String): Bitmap? {
+        return try {
+            with(assets.open(fileName)) {
+                BitmapFactory.decodeStream(this)
+            }
+        } catch (e: IOException) {
+            null
+        }
+    }
