@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey
 @Entity
 data class Memory(
     @PrimaryKey(autoGenerate = true) val id: Int,
-    @ColumnInfo(name = "title") val title: String,
+    @ColumnInfo(name = "title") var title: String,
     @ColumnInfo(name = "description") val description: String,
     @ColumnInfo(name = "latitude") val latitude: Double,
     @ColumnInfo(name = "longitude") val longitude: Double,

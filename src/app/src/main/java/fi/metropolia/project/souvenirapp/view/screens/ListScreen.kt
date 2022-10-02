@@ -27,20 +27,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import fi.metropolia.project.souvenirapp.model.getBitmapFromSampleFile
+import fi.metropolia.project.souvenirapp.viewmodel.MemoryViewModel
 import java.io.IOException
 
 
 @Composable
 fun ListScreen(
+    listViewModel: MemoryViewModel
 ) {
-    val imageBitmap = remember {
-        mutableStateOf<ImageBitmap?>(null)
-    }
     val context = LocalContext.current
-    val bitmap: Bitmap? = context.assetsToBitmap("strawberries.jpg")
-    bitmap?.apply {
-        imageBitmap.value = this.asImageBitmap()
-    }
+    val bitmap: Bitmap? = getBitmapFromSampleFile()
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -61,33 +58,35 @@ fun ListScreen(
                 )
             )
             Row() {
-                imageBitmap.value?.apply {
+                if(bitmap != null) {
                     Image(
-                        bitmap = this,
-                        contentDescription ="strawberrie",
+                        bitmap = bitmap.asImageBitmap(),
+                        contentDescription = "strawberries",
                         /*contentScale = ContentScale.Crop,*/
                         modifier = Modifier
                             .padding(start = 10.dp, bottom = 10.dp)
                             .fillMaxWidth(0.3F)
                             .clip(RoundedCornerShape(10.dp))
-                            /*.border(
-                                3.dp,
-                                Color(0xFF000000),
-                                RoundedCornerShape(10.dp)
-                            )*/
-                        )
+                        /*.border(
+                            3.dp,
+                            Color(0xFF000000),
+                            RoundedCornerShape(10.dp)
+                        )*/
+                    )
                 }
-                Text(text = "DESCRIPTION",modifier = Modifier
-                    .align(CenterVertically)
-                    .padding(start = 10.dp, end = 5.dp, bottom = 10.dp)
+                Text(
+                    text = "DESCRIPTION", modifier = Modifier
+                        .align(CenterVertically)
+                        .padding(start = 10.dp, end = 5.dp, bottom = 10.dp)
                 )
             }
             /*Icon(
                 painter = painterResource(id= R.drawable.ic_calendar),
                 contentDescription = null
             )*/
-            Row(modifier = Modifier
-                .fillMaxWidth()
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
             ) {
                 //Icon(painter = painterResource(id = R.drawable.c))
                 Row(Modifier.fillMaxWidth(0.3F)) {
@@ -107,12 +106,13 @@ fun ListScreen(
 
     }
 }
-    private fun Context.assetsToBitmap(fileName: String): Bitmap? {
-        return try {
-            with(assets.open(fileName)) {
-                BitmapFactory.decodeStream(this)
-            }
-        } catch (e: IOException) {
-            null
+
+fun Context.assetsToBitmap(fileName: String): Bitmap? {
+    return try {
+        with(assets.open(fileName)) {
+            BitmapFactory.decodeStream(this)
         }
+    } catch (e: IOException) {
+        null
     }
+}

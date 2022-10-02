@@ -1,5 +1,7 @@
 package fi.metropolia.project.souvenirapp.view.screens
 
+import android.graphics.Bitmap
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
@@ -11,21 +13,37 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fi.metropolia.project.souvenirapp.R
+import fi.metropolia.project.souvenirapp.model.data.Memory
+import fi.metropolia.project.souvenirapp.model.getBitmapFromSampleFile
+import fi.metropolia.project.souvenirapp.viewmodel.MemoryViewModel
 
 
 @Composable
-fun CreateScreen() {
-    var txtTitle = remember { mutableStateOf("") }
-    var txtDescription = remember { mutableStateOf("") }
-    var txtLocation = remember { mutableStateOf("") }
+fun CreateScreen(memoryViewModel: MemoryViewModel) {
+    val txtTitle = remember { mutableStateOf("") }
+    val txtDescription = remember { mutableStateOf("") }
+    val txtLocation = remember { mutableStateOf("") }
+
+
+    val context = LocalContext.current
+    val bitmap: Bitmap? = getBitmapFromSampleFile()
+
     Column(modifier = Modifier.fillMaxWidth()) {
         Column(modifier = Modifier.fillMaxWidth()) {
-            //Image()
-            Text("Here is supposed to be the Image", modifier = Modifier.align(Alignment.CenterHorizontally))
+            if (bitmap != null) {
+                Image(
+                    bitmap = bitmap.asImageBitmap(),
+                    contentDescription = "strawberries",
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                )
+            }
             Spacer(modifier = Modifier.size(40.dp))
         }
         Row(modifier = Modifier.fillMaxWidth()) {
@@ -37,21 +55,34 @@ fun CreateScreen() {
                 Text(stringResource(R.string.location))
             }
             Column() {
-                TextField(txtTitle.value, onValueChange = {txtTitle.value = it})
+                TextField(txtTitle.value, onValueChange = { txtTitle.value = it })
                 Spacer(modifier = Modifier.size(20.dp))
-                TextField(txtDescription.value, onValueChange = {txtDescription.value = it})
+                TextField(txtDescription.value, onValueChange = { txtDescription.value = it })
                 Spacer(modifier = Modifier.size(20.dp))
-                TextField(txtLocation.value, onValueChange = {txtLocation.value = it})
+                TextField(txtLocation.value, onValueChange = { txtLocation.value = it })
             }
         }
-        Row(modifier = Modifier.fillMaxWidth()){
+        Row(modifier = Modifier.fillMaxWidth()) {
             Spacer(modifier = Modifier.size(220.dp))
-            Row(){
+            Row() {
                 Button(onClick = { /*TODO*/ }) {
                     Text(stringResource(R.string.cancel))
                 }
                 Spacer(modifier = Modifier.size(10.dp))
-                Button(onClick = { /*TODO*/ }) {
+                Button(onClick = {
+                    if (txtTitle.value.isNotEmpty()
+                        && txtDescription.value.isNotEmpty()
+                        && txtLocation.value.isNotEmpty()
+                    ) {
+                        memoryViewModel.createNewMemory(
+                            txtTitle.value,
+                            txtDescription.value,
+                            0.0,
+                            0.0,
+                            "uri"
+                        )
+                    }
+                }) {
                     Text(stringResource(R.string.done))
                 }
             }

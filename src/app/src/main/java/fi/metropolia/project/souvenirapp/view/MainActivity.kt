@@ -9,12 +9,15 @@ import androidx.preference.PreferenceManager
 import fi.metropolia.project.souvenirapp.view.screens.getMap
 import fi.metropolia.project.souvenirapp.view.theme.SouvenirAppTheme
 import fi.metropolia.project.souvenirapp.viewmodel.MapViewModel
+import fi.metropolia.project.souvenirapp.viewmodel.MemoryViewModel
 import org.osmdroid.config.Configuration
 import java.io.File
 
 class MainActivity : ComponentActivity() {
 
     private lateinit var mapViewModel: MapViewModel
+    private val memoryViewModel: MemoryViewModel = MemoryViewModel()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,7 +27,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             mapViewModel = MapViewModel(application, getMap(context = applicationContext))
             SouvenirAppTheme {
-                MainScreen(mapViewModel)
+                MainScreen(mapViewModel, memoryViewModel)
 //                val memories = createSampleMemories()
 //                ShowMemories(memoriesList = memories, applicationContext)
             }
