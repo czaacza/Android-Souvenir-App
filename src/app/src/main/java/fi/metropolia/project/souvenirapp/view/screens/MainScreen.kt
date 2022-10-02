@@ -15,6 +15,6 @@ fun MainScreen(mapViewModel : MapViewModel, memoryViewModel : MemoryViewModel) {
         bottomBar = {
             BottomBar(navController = navController)
         }) {
-        BottomBarNavigation(navController = navController, mapViewModel, memoryViewModel)
+        BottomBarNavigation(navController = navController, mapViewModel,memoryViewModel)
     }
 }

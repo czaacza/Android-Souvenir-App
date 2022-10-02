@@ -31,8 +31,6 @@ fun CreateScreen(memoryViewModel: MemoryViewModel) {
     val txtDescription = remember { mutableStateOf("") }
     val txtLocation = remember { mutableStateOf("") }
 
-
-    val context = LocalContext.current
     val bitmap: Bitmap? = getBitmapFromSampleFile()
 
     Column(modifier = Modifier.fillMaxWidth()) {
