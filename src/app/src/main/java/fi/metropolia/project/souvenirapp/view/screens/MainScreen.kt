@@ -6,15 +6,15 @@ import androidx.navigation.compose.rememberNavController
 import fi.metropolia.project.souvenirapp.view.components.BottomBar
 import fi.metropolia.project.souvenirapp.view.navigation.BottomBarNavigation
 import fi.metropolia.project.souvenirapp.viewmodel.MapViewModel
-import fi.metropolia.project.souvenirapp.viewmodel.MemoryViewModel
+import fi.metropolia.project.souvenirapp.viewmodel.MemoryDatabaseViewModel
 
 @Composable
-fun MainScreen(mapViewModel : MapViewModel, memoryViewModel : MemoryViewModel) {
+fun MainScreen(mapViewModel: MapViewModel, memoryDatabaseViewModel: MemoryDatabaseViewModel) {
     val navController = rememberNavController()
     Scaffold(
         bottomBar = {
             BottomBar(navController = navController)
         }) {
-        BottomBarNavigation(navController = navController, mapViewModel,memoryViewModel)
+        BottomBarNavigation(navController = navController, mapViewModel, memoryDatabaseViewModel)
     }
 }

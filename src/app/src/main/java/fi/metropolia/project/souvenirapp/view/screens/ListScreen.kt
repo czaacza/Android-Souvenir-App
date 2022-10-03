@@ -14,12 +14,9 @@ import androidx.compose.material.icons.outlined.Face
 import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
@@ -28,13 +25,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fi.metropolia.project.souvenirapp.model.getBitmapFromSampleFile
-import fi.metropolia.project.souvenirapp.viewmodel.MemoryViewModel
 import java.io.IOException
 
 
 @Composable
 fun ListScreen(
-    listViewModel: MemoryViewModel
 ) {
     val context = LocalContext.current
     val bitmap: Bitmap? = getBitmapFromSampleFile()

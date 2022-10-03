@@ -2,7 +2,6 @@ package fi.metropolia.project.souvenirapp.view.screens
 
 import android.graphics.Bitmap
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.Text
@@ -12,21 +11,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import fi.metropolia.project.souvenirapp.R
-import fi.metropolia.project.souvenirapp.model.data.Memory
 import fi.metropolia.project.souvenirapp.model.getBitmapFromSampleFile
-import fi.metropolia.project.souvenirapp.viewmodel.MemoryViewModel
+import fi.metropolia.project.souvenirapp.viewmodel.MemoryDatabaseViewModel
 
 
 @Composable
-fun CreateScreen(memoryViewModel: MemoryViewModel) {
+fun CreateScreen(memoryDatabaseViewModel: MemoryDatabaseViewModel) {
     val txtTitle = remember { mutableStateOf("") }
     val txtDescription = remember { mutableStateOf("") }
     val txtLocation = remember { mutableStateOf("") }
@@ -72,7 +66,7 @@ fun CreateScreen(memoryViewModel: MemoryViewModel) {
                         && txtDescription.value.isNotEmpty()
                         && txtLocation.value.isNotEmpty()
                     ) {
-                        memoryViewModel.createNewMemory(
+                        memoryDatabaseViewModel.createNewMemory(
                             txtTitle.value,
                             txtDescription.value,
                             0.0,

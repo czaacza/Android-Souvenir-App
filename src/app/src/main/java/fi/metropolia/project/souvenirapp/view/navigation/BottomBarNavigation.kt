@@ -1,7 +1,6 @@
 package fi.metropolia.project.souvenirapp.view.navigation
 
 
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -11,13 +10,13 @@ import fi.metropolia.project.souvenirapp.view.screens.CreateScreen
 import fi.metropolia.project.souvenirapp.view.screens.ListScreen
 import fi.metropolia.project.souvenirapp.view.screens.MapScreen
 import fi.metropolia.project.souvenirapp.viewmodel.MapViewModel
-import fi.metropolia.project.souvenirapp.viewmodel.MemoryViewModel
+import fi.metropolia.project.souvenirapp.viewmodel.MemoryDatabaseViewModel
 
 @Composable
 fun BottomBarNavigation(
     navController: NavHostController,
     mapViewModel: MapViewModel,
-    memoryViewModel : MemoryViewModel
+    memoryDatabaseViewModel : MemoryDatabaseViewModel
 ) {
     NavHost(
         navController = navController,
@@ -27,10 +26,10 @@ fun BottomBarNavigation(
             MapScreen(mapViewModel)
         }
         composable(BottomBarScreen.ListScreen.route) {
-            ListScreen(memoryViewModel)
+            ListScreen()
         }
         composable(BottomBarScreen.CreateMemoryScreen.route) {
-            CreateScreen(memoryViewModel)
+            CreateScreen(memoryDatabaseViewModel)
         }
     }
 }

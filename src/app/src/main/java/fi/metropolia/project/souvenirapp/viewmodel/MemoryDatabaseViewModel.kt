@@ -33,4 +33,16 @@ class MemoryDatabaseViewModel(application: Application) : AndroidViewModel(appli
         }
     }
 
+    fun createNewMemory(
+        title: String,
+        description: String,
+        latitude: Double,
+        longitude: Double,
+        imageUri: String,
+    ) {
+        val newMemory : Memory
+        newMemory = Memory(0, title, description, latitude, longitude, imageUri)
+        insert(newMemory)
+    }
+
 }
