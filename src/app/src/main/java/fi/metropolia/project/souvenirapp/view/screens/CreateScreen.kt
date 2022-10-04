@@ -1,12 +1,15 @@
 package fi.metropolia.project.souvenirapp.view.screens
 
+import android.content.Context
 import android.graphics.Bitmap
+import android.hardware.SensorManager
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -14,18 +17,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.getSystemService
 import fi.metropolia.project.souvenirapp.R
 import fi.metropolia.project.souvenirapp.model.getBitmapFromSampleFile
+import fi.metropolia.project.souvenirapp.model.trysensor
+import fi.metropolia.project.souvenirapp.viewmodel.LightSensorViewModel
 import fi.metropolia.project.souvenirapp.viewmodel.MemoryDatabaseViewModel
 
 
+
 @Composable
-fun CreateScreen(memoryDatabaseViewModel: MemoryDatabaseViewModel) {
+fun CreateScreen(memoryDatabaseViewModel: MemoryDatabaseViewModel,sensorViewModel:LightSensorViewModel) {
     val txtTitle = remember { mutableStateOf("") }
     val txtDescription = remember { mutableStateOf("") }
     val txtLocation = remember { mutableStateOf("") }
 
     val bitmap: Bitmap? = getBitmapFromSampleFile()
+
+    val sunData = sensorViewModel.sunData.observeAsState()
 
     Column(modifier = Modifier.fillMaxWidth()) {
         Column(modifier = Modifier.fillMaxWidth()) {
@@ -55,6 +64,14 @@ fun CreateScreen(memoryDatabaseViewModel: MemoryDatabaseViewModel) {
             }
         }
         Row(modifier = Modifier.fillMaxWidth()) {
+            if(sunData.value == null){
+                Text(text = "NO LIGHT SENSOR ON YOUR PHONE")
+            }
+            else{
+                Text(text = "LIGHT = ${sunData.value}")
+            }
+        }
+        Row(modifier = Modifier.fillMaxWidth()) {
             Spacer(modifier = Modifier.size(220.dp))
             Row() {
                 Button(onClick = { /*TODO*/ }) {
@@ -77,6 +94,7 @@ fun CreateScreen(memoryDatabaseViewModel: MemoryDatabaseViewModel) {
                 }) {
                     Text(stringResource(R.string.done))
                 }
+                
             }
         }
     }
