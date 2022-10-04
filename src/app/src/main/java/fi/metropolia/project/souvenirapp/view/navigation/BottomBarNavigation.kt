@@ -10,6 +10,7 @@ import fi.metropolia.project.souvenirapp.view.screens.CreateScreen
 import fi.metropolia.project.souvenirapp.view.screens.ListScreen
 import fi.metropolia.project.souvenirapp.view.screens.MapScreen
 import fi.metropolia.project.souvenirapp.viewmodel.CameraViewModel
+import fi.metropolia.project.souvenirapp.viewmodel.LightSensorViewModel
 import fi.metropolia.project.souvenirapp.viewmodel.MapViewModel
 import fi.metropolia.project.souvenirapp.viewmodel.MemoryDatabaseViewModel
 
@@ -17,8 +18,9 @@ import fi.metropolia.project.souvenirapp.viewmodel.MemoryDatabaseViewModel
 fun BottomBarNavigation(
     navController: NavHostController,
     mapViewModel: MapViewModel,
-    memoryDatabaseViewModel : MemoryDatabaseViewModel,
-    cameraViewModel : CameraViewModel
+    memoryDatabaseViewModel: MemoryDatabaseViewModel,
+    cameraViewModel: CameraViewModel,
+    sensorViewModel: LightSensorViewModel
 ) {
     NavHost(
         navController = navController,
@@ -31,7 +33,7 @@ fun BottomBarNavigation(
             ListScreen()
         }
         composable(BottomBarScreen.CreateMemoryScreen.route) {
-            CreateScreen(memoryDatabaseViewModel, cameraViewModel)
+            CreateScreen(memoryDatabaseViewModel, cameraViewModel, sensorViewModel)
         }
     }
 }

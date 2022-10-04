@@ -19,13 +19,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import fi.metropolia.project.souvenirapp.R
 import fi.metropolia.project.souvenirapp.viewmodel.CameraViewModel
+import fi.metropolia.project.souvenirapp.viewmodel.LightSensorViewModel
 import fi.metropolia.project.souvenirapp.viewmodel.MemoryDatabaseViewModel
 
 
 @Composable
 fun CreateScreen(
     memoryDatabaseViewModel: MemoryDatabaseViewModel,
-    cameraViewModel: CameraViewModel
+    cameraViewModel: CameraViewModel,
+    sensorViewModel: LightSensorViewModel
 ) {
     val txtTitle = remember { mutableStateOf("") }
     val txtDescription = remember { mutableStateOf("") }
@@ -42,12 +44,13 @@ fun CreateScreen(
         isPictureTaken.value = true
     }
 
-
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .verticalScroll(rememberScrollState())
     ) {
+        val sunData = sensorViewModel.sunData.observeAsState()
+
         Column(modifier = Modifier.fillMaxWidth()) {
             if (bitmap != null && bitmap.value != null) {
                 Image(
@@ -78,6 +81,13 @@ fun CreateScreen(
             }
         }
         Row(modifier = Modifier.fillMaxWidth()) {
+            if (sunData.value == null) {
+                Text(text = "NO LIGHT SENSOR ON YOUR PHONE")
+            } else {
+                Text(text = "LIGHT = ${sunData.value}")
+            }
+        }
+        Row(modifier = Modifier.fillMaxWidth()) {
             Spacer(modifier = Modifier.size(220.dp))
             Row() {
                 Button(onClick = { /*TODO*/ }) {
@@ -100,6 +110,7 @@ fun CreateScreen(
                 }) {
                     Text(stringResource(R.string.done))
                 }
+
             }
         }
     }
