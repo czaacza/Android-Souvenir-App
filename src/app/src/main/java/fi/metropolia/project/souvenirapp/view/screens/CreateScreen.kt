@@ -1,39 +1,62 @@
 package fi.metropolia.project.souvenirapp.view.screens
 
-import android.graphics.Bitmap
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import fi.metropolia.project.souvenirapp.R
-import fi.metropolia.project.souvenirapp.model.getBitmapFromSampleFile
+import fi.metropolia.project.souvenirapp.viewmodel.CameraViewModel
 import fi.metropolia.project.souvenirapp.viewmodel.MemoryDatabaseViewModel
 
 
 @Composable
-fun CreateScreen(memoryDatabaseViewModel: MemoryDatabaseViewModel) {
+fun CreateScreen(
+    memoryDatabaseViewModel: MemoryDatabaseViewModel,
+    cameraViewModel: CameraViewModel
+) {
     val txtTitle = remember { mutableStateOf("") }
     val txtDescription = remember { mutableStateOf("") }
     val txtLocation = remember { mutableStateOf("") }
 
-    val bitmap: Bitmap? = getBitmapFromSampleFile()
+    val isPictureTaken = remember {
+        mutableStateOf(false)
+    }
+    val bitmap = cameraViewModel.imageBitmap.observeAsState()
+    cameraViewModel.SetLauncher()
 
-    Column(modifier = Modifier.fillMaxWidth()) {
+    if (!isPictureTaken.value) {
+        cameraViewModel.launch()
+        isPictureTaken.value = true
+    }
+
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .verticalScroll(rememberScrollState())
+    ) {
         Column(modifier = Modifier.fillMaxWidth()) {
-            if (bitmap != null) {
+            if (bitmap != null && bitmap.value != null) {
                 Image(
-                    bitmap = bitmap.asImageBitmap(),
+                    bitmap = bitmap.value!!.asImageBitmap(),
                     contentDescription = "strawberries",
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .fillMaxSize(),
+                    contentScale = ContentScale.Crop
                 )
             }
             Spacer(modifier = Modifier.size(40.dp))
