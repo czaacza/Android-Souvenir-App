@@ -4,7 +4,6 @@ import androidx.room.*
 
 @Dao
 interface MemoryDao {
-
     @Query("SELECT * FROM memory")
     fun getAll(): List<Memory>
 
@@ -16,4 +15,7 @@ interface MemoryDao {
 
     @Update
     suspend fun update(memory: Memory)
+
+    @Query("DELETE FROM memory")
+    suspend fun clearTable()
 }

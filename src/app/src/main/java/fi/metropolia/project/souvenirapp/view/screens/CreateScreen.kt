@@ -1,5 +1,6 @@
 package fi.metropolia.project.souvenirapp.view.screens
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -13,6 +14,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
@@ -21,6 +23,7 @@ import fi.metropolia.project.souvenirapp.R
 import fi.metropolia.project.souvenirapp.viewmodel.CameraViewModel
 import fi.metropolia.project.souvenirapp.viewmodel.LightSensorViewModel
 import fi.metropolia.project.souvenirapp.viewmodel.MemoryDatabaseViewModel
+import kotlin.math.floor
 
 
 @Composable
@@ -42,6 +45,7 @@ fun CreateScreen(
     if (!isPictureTaken.value) {
         cameraViewModel.launch()
         isPictureTaken.value = true
+        return
     }
 
     Column(
@@ -58,28 +62,30 @@ fun CreateScreen(
                     contentDescription = "strawberries",
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally)
+                        .rotate(90f)
                         .fillMaxSize(),
-                    contentScale = ContentScale.Crop
                 )
             }
-            Spacer(modifier = Modifier.size(40.dp))
-        }
-        Row(modifier = Modifier.fillMaxWidth()) {
-            Column() {
-                Text(stringResource(R.string.title))
-                Spacer(modifier = Modifier.size(55.dp))
-                Text(stringResource(R.string.description))
-                Spacer(modifier = Modifier.size(53.dp))
-                Text(stringResource(R.string.location))
+            Spacer(modifier = Modifier.size(100.dp))
+
+            Row(modifier = Modifier.fillMaxWidth()) {
+                Column() {
+                    Text(stringResource(R.string.title))
+                    Spacer(modifier = Modifier.size(55.dp))
+                    Text(stringResource(R.string.description))
+                    Spacer(modifier = Modifier.size(53.dp))
+                    Text(stringResource(R.string.location))
+                }
+                Column() {
+                    TextField(txtTitle.value, onValueChange = { txtTitle.value = it })
+                    Spacer(modifier = Modifier.size(20.dp))
+                    TextField(txtDescription.value, onValueChange = { txtDescription.value = it })
+                    Spacer(modifier = Modifier.size(20.dp))
+                    TextField(txtLocation.value, onValueChange = { txtLocation.value = it })
+                }
             }
-            Column() {
-                TextField(txtTitle.value, onValueChange = { txtTitle.value = it })
-                Spacer(modifier = Modifier.size(20.dp))
-                TextField(txtDescription.value, onValueChange = { txtDescription.value = it })
-                Spacer(modifier = Modifier.size(20.dp))
-                TextField(txtLocation.value, onValueChange = { txtLocation.value = it })
-            }
         }
+
         Row(modifier = Modifier.fillMaxWidth()) {
             if (sunData.value == null) {
                 Text(text = "NO LIGHT SENSOR ON YOUR PHONE")
@@ -99,12 +105,14 @@ fun CreateScreen(
                         && txtDescription.value.isNotEmpty()
                         && txtLocation.value.isNotEmpty()
                     ) {
+                        Log.d("DBG", "imgPath: ${cameraViewModel.imageAbsolutePath}")
+
                         memoryDatabaseViewModel.createNewMemory(
                             txtTitle.value,
                             txtDescription.value,
                             0.0,
                             0.0,
-                            "uri"
+                            cameraViewModel.imageAbsolutePath
                         )
                     }
                 }) {

@@ -37,6 +37,12 @@ class MemoryDatabaseViewModel(application: Application) : AndroidViewModel(appli
         }
     }
 
+    fun clear() {
+        viewModelScope.launch {
+            database.memoryDao().clearTable();
+        }
+    }
+
     fun createNewMemory(
         title: String,
         description: String,

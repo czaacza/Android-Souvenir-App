@@ -40,7 +40,6 @@ fun ListScreen(
 ) {
     memoryDatabaseViewModel.setMemoriesFromDatabase()
     val memories = memoryDatabaseViewModel.memories.observeAsState()
-    Log.d("DBG", "${memories.value}")
     if (memories != null && memories.value != null) {
         Column(Modifier.verticalScroll(rememberScrollState())) {
             memories.value!!.forEach { memory ->
@@ -86,7 +85,7 @@ fun ShowMemoryCard(memory: Memory) {
             Row() {
                 if (bitmap != null) {
                     Image(
-                        bitmap = bitmap.asImageBitmap(),
+                        bitmap = BitmapFactory.decodeFile(memory.imageUri).asImageBitmap(),
                         contentDescription = "strawberries",
                         /*contentScale = ContentScale.Crop,*/
                         modifier = Modifier
