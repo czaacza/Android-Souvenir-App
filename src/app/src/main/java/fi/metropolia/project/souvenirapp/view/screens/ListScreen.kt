@@ -3,9 +3,12 @@ package fi.metropolia.project.souvenirapp.view.screens
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
@@ -14,6 +17,7 @@ import androidx.compose.material.icons.outlined.Face
 import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -24,13 +28,39 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import fi.metropolia.project.souvenirapp.model.data.Memory
 import fi.metropolia.project.souvenirapp.model.getBitmapFromSampleFile
+import fi.metropolia.project.souvenirapp.viewmodel.MemoryDatabaseViewModel
 import java.io.IOException
 
 
 @Composable
 fun ListScreen(
+    memoryDatabaseViewModel: MemoryDatabaseViewModel
 ) {
+    memoryDatabaseViewModel.setMemoriesFromDatabase()
+    val memories = memoryDatabaseViewModel.memories.observeAsState()
+    if (memories != null && memories.value != null) {
+        Column(Modifier.verticalScroll(rememberScrollState())) {
+            memories.value!!.forEach { memory ->
+                ShowMemoryCard(memory)
+            }
+        }
+    }
+}
+
+fun Context.assetsToBitmap(fileName: String): Bitmap? {
+    return try {
+        with(assets.open(fileName)) {
+            BitmapFactory.decodeStream(this)
+        }
+    } catch (e: IOException) {
+        null
+    }
+}
+
+@Composable
+fun ShowMemoryCard(memory: Memory) {
     val context = LocalContext.current
     val bitmap: Bitmap? = getBitmapFromSampleFile()
     Card(
@@ -42,7 +72,7 @@ fun ListScreen(
     ) {
         Column(modifier = Modifier.padding(5.dp)) {
             Text(
-                text = "TITLE",
+                text = memory.title,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 5.dp),
@@ -53,9 +83,9 @@ fun ListScreen(
                 )
             )
             Row() {
-                if(bitmap != null) {
+                if (bitmap != null) {
                     Image(
-                        bitmap = bitmap.asImageBitmap(),
+                        bitmap = BitmapFactory.decodeFile(memory.imageUri).asImageBitmap(),
                         contentDescription = "strawberries",
                         /*contentScale = ContentScale.Crop,*/
                         modifier = Modifier
@@ -70,7 +100,7 @@ fun ListScreen(
                     )
                 }
                 Text(
-                    text = "DESCRIPTION", modifier = Modifier
+                    text = memory.description, modifier = Modifier
                         .align(CenterVertically)
                         .padding(start = 10.dp, end = 5.dp, bottom = 10.dp)
                 )
@@ -99,15 +129,5 @@ fun ListScreen(
             }
         }
 
-    }
-}
-
-fun Context.assetsToBitmap(fileName: String): Bitmap? {
-    return try {
-        with(assets.open(fileName)) {
-            BitmapFactory.decodeStream(this)
-        }
-    } catch (e: IOException) {
-        null
     }
 }

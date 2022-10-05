@@ -1,10 +1,14 @@
 package fi.metropolia.project.souvenirapp.view.activities
 
 import android.content.Context
+import android.graphics.BitmapFactory
 import android.hardware.SensorManager
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.preference.PreferenceManager
 import fi.metropolia.project.souvenirapp.view.MainScreen
 import fi.metropolia.project.souvenirapp.view.screens.getMap
@@ -14,6 +18,8 @@ import fi.metropolia.project.souvenirapp.model.trysensor
 import fi.metropolia.project.souvenirapp.viewmodel.LightSensorViewModel
 import fi.metropolia.project.souvenirapp.viewmodel.MapViewModel
 import fi.metropolia.project.souvenirapp.viewmodel.MemoryDatabaseViewModel
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.osmdroid.config.Configuration
 
 class MainActivity : ComponentActivity() {
@@ -34,6 +40,7 @@ class MainActivity : ComponentActivity() {
         cameraViewModel = CameraViewModel(application)
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         sensorViewModel = LightSensorViewModel(sensorManager)
+//        memoryDatabaseViewModel.clear()
 
         setContent {
             mapViewModel = MapViewModel(application, getMap(context = applicationContext))
@@ -45,7 +52,12 @@ class MainActivity : ComponentActivity() {
                 setContent {
                     mapViewModel = MapViewModel(application, getMap(context = applicationContext))
                     SouvenirAppTheme {
-                        MainScreen(mapViewModel, memoryDatabaseViewModel, cameraViewModel, sensorViewModel)
+                        MainScreen(
+                            mapViewModel,
+                            memoryDatabaseViewModel,
+                            cameraViewModel,
+                            sensorViewModel
+                        )
                     }
                 }
             }

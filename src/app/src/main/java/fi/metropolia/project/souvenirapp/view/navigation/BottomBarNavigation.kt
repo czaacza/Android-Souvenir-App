@@ -30,7 +30,7 @@ fun BottomBarNavigation(
             MapScreen(mapViewModel)
         }
         composable(BottomBarScreen.ListScreen.route) {
-            ListScreen()
+            ListScreen(memoryDatabaseViewModel)
         }
         composable(BottomBarScreen.CreateMemoryScreen.route) {
             CreateScreen(memoryDatabaseViewModel, cameraViewModel, sensorViewModel)

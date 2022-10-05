@@ -23,8 +23,8 @@ class CameraViewModel(application: Application) : AndroidViewModel(application) 
     private val isLaunched = MutableLiveData(false)
 
     private val imageFile: File
-    private val imageUri: Uri
-    private val imageAbsolutePath: String
+    val imageUri: Uri
+    val imageAbsolutePath: String
 
     init {
         imageFile = createFileForImage("createScreenImage")
@@ -52,12 +52,12 @@ class CameraViewModel(application: Application) : AndroidViewModel(application) 
         isLaunched.value = true;
     }
 
-    private fun createFileForImage(fileName: String): File {
+    fun createFileForImage(fileName: String): File {
         val filePath = app.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         return File.createTempFile(fileName, ".jpg", filePath)
     }
 
-    private fun getImgUri(imgFile: File): Uri {
+    fun getImgUri(imgFile: File): Uri {
         val photoURI: Uri =
             FileProvider.getUriForFile(
                 app, "fi.metropolia.project.souvenirapp.fileprovider", imgFile
