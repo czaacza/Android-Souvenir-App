@@ -14,18 +14,18 @@ sealed class BottomBarScreen(
     object MapScreen : BottomBarScreen(
         route = "map",
         title = "Map",
-        icon = Icons.Default.LocationOn
+        icon = Icons.Filled.LocationOn
     )
 
     object ListScreen : BottomBarScreen(
         route = "list",
         title = "Memories",
-        icon = Icons.Default.List
+        icon = Icons.Filled.List
     )
 
     object CreateMemoryScreen : BottomBarScreen(
         route = "create",
         title = "Create",
-        icon = Icons.Default.Add
+        icon = Icons.Filled.Add
     )
 }

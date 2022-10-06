@@ -1,25 +1,18 @@
 package fi.metropolia.project.souvenirapp.view.activities
 
-import android.content.Context
-import android.graphics.BitmapFactory
 import android.hardware.SensorManager
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.Image
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.preference.PreferenceManager
-import fi.metropolia.project.souvenirapp.view.MainScreen
 import fi.metropolia.project.souvenirapp.view.screens.getMap
 import fi.metropolia.project.souvenirapp.view.theme.SouvenirAppTheme
 import fi.metropolia.project.souvenirapp.viewmodel.CameraViewModel
 import fi.metropolia.project.souvenirapp.model.trysensor
+import fi.metropolia.project.souvenirapp.view.MainScreen
 import fi.metropolia.project.souvenirapp.viewmodel.LightSensorViewModel
 import fi.metropolia.project.souvenirapp.viewmodel.MapViewModel
 import fi.metropolia.project.souvenirapp.viewmodel.MemoryDatabaseViewModel
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import org.osmdroid.config.Configuration
 
 class MainActivity : ComponentActivity() {
@@ -38,28 +31,15 @@ class MainActivity : ComponentActivity() {
 
         memoryDatabaseViewModel = MemoryDatabaseViewModel(application)
         cameraViewModel = CameraViewModel(application)
-        sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
         sensorViewModel = LightSensorViewModel(sensorManager)
-//        memoryDatabaseViewModel.clear()
+        memoryDatabaseViewModel.clear()
 
         setContent {
             mapViewModel = MapViewModel(application, getMap(context = applicationContext))
             SouvenirAppTheme {
                 MainScreen(mapViewModel, memoryDatabaseViewModel, cameraViewModel, sensorViewModel)
-
                 trysensor(sensorManager)
-
-                setContent {
-                    mapViewModel = MapViewModel(application, getMap(context = applicationContext))
-                    SouvenirAppTheme {
-                        MainScreen(
-                            mapViewModel,
-                            memoryDatabaseViewModel,
-                            cameraViewModel,
-                            sensorViewModel
-                        )
-                    }
-                }
             }
         }
     }
