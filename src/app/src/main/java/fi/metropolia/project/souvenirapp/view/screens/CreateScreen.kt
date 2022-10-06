@@ -25,7 +25,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import fi.metropolia.project.souvenirapp.R
+import fi.metropolia.project.souvenirapp.view.components.BottomBarScreen
 import fi.metropolia.project.souvenirapp.viewmodel.CameraViewModel
 import fi.metropolia.project.souvenirapp.viewmodel.LightSensorViewModel
 import fi.metropolia.project.souvenirapp.viewmodel.MemoryDatabaseViewModel
@@ -36,7 +38,8 @@ import kotlin.math.floor
 fun CreateScreen(
     memoryDatabaseViewModel: MemoryDatabaseViewModel,
     cameraViewModel: CameraViewModel,
-    sensorViewModel: LightSensorViewModel
+    sensorViewModel: LightSensorViewModel,
+    navController: NavController
 ) {
     val txtTitle = remember { mutableStateOf("") }
     val txtDescription = remember { mutableStateOf("") }
@@ -155,7 +158,16 @@ fun CreateScreen(
                     Text(text = "Done", color = MaterialTheme.colors.primary)
                 },
                 modifier = Modifier,
-                onClick = { /*TODO*/ })
+                onClick = {
+                    memoryDatabaseViewModel.createNewMemory(
+                        txtTitle.value,
+                        txtDescription.value,
+                        0.0,
+                        0.0,
+                        cameraViewModel.imageAbsolutePath
+                    )
+                    navController.navigate(route = BottomBarScreen.ListScreen.route)
+                })
         }
 
     }

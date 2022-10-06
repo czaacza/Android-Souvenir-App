@@ -30,7 +30,7 @@ class LightSensorViewModel(val sensorManager: SensorManager) {
             }
         }
         override fun onAccuracyChanged(sensor: Sensor?, p1: Int) {
-            Log.d("DBG", "Accuracy changed")
+//            Log.d("DBG", "Accuracy changed")
         }
     }
 }

@@ -2,9 +2,11 @@ package fi.metropolia.project.souvenirapp.view.activities
 
 import android.hardware.SensorManager
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.preference.PreferenceManager
+import fi.metropolia.project.souvenirapp.model.logMemories
 import fi.metropolia.project.souvenirapp.view.screens.getMap
 import fi.metropolia.project.souvenirapp.view.theme.SouvenirAppTheme
 import fi.metropolia.project.souvenirapp.viewmodel.CameraViewModel
@@ -33,7 +35,7 @@ class MainActivity : ComponentActivity() {
         cameraViewModel = CameraViewModel(application)
         sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
         sensorViewModel = LightSensorViewModel(sensorManager)
-        memoryDatabaseViewModel.clear()
+//        memoryDatabaseViewModel.clear()
 
         setContent {
             mapViewModel = MapViewModel(application, getMap(context = applicationContext))

@@ -32,7 +32,7 @@ fun BottomBarNavigation(
             ListScreen(memoryDatabaseViewModel)
         }
         composable(BottomBarScreen.CreateMemoryScreen.route) {
-            CreateScreen(memoryDatabaseViewModel, cameraViewModel, sensorViewModel)
+            CreateScreen(memoryDatabaseViewModel, cameraViewModel, sensorViewModel, navController)
         }
     }
 }
