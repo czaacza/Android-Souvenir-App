@@ -27,18 +27,21 @@ fun BottomBar(navController: NavHostController) {
     val currentDestination = currentStackEntry?.destination
 
     BottomNavigation(
-        modifier = Modifier.fillMaxHeight(0.1f),
     ) {
         screens.forEach { screen ->
             BottomNavigationItem(
                 label = {
-                    Text(text = screen.title, fontSize = 16.sp)
+                    Text(
+                        text = screen.title,
+                        color = MaterialTheme.colors.secondary,
+                        style = MaterialTheme.typography.subtitle1
+                    )
                 },
                 icon = {
                     Icon(
                         imageVector = screen.icon,
+                        tint = MaterialTheme.colors.secondary,
                         contentDescription = "Icon",
-                        modifier = Modifier.size(30.dp)
                     )
                 },
                 unselectedContentColor = LocalContentColor.current.copy(ContentAlpha.disabled),
@@ -46,10 +49,10 @@ fun BottomBar(navController: NavHostController) {
                     it.route == screen.route
                 } == true,
                 onClick = {
-                        navController.navigate(route = screen.route) {
-                            popUpTo(navController.graph.findStartDestination().id)
-                            launchSingleTop = true
-                        }
+                    navController.navigate(route = screen.route) {
+                        popUpTo(navController.graph.findStartDestination().id)
+                        launchSingleTop = true
+                    }
                 }
             )
         }
