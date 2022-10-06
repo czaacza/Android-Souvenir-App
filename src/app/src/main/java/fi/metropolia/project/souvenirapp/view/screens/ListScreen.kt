@@ -5,22 +5,23 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Face
 import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
@@ -38,12 +39,35 @@ import java.io.IOException
 fun ListScreen(
     memoryDatabaseViewModel: MemoryDatabaseViewModel
 ) {
-    memoryDatabaseViewModel.setMemoriesFromDatabase()
     val memories = memoryDatabaseViewModel.memories.observeAsState()
-    if (memories != null && memories.value != null) {
-        Column(Modifier.verticalScroll(rememberScrollState())) {
-            memories.value!!.forEach { memory ->
-                ShowMemoryCard(memory)
+
+    Column(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        TopAppBar(
+            modifier = Modifier
+                .fillMaxWidth(),
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxSize(),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = CenterVertically
+            ) {
+                Text(
+                    text = "MY MEMORIES",
+                    style = MaterialTheme.typography.h1,
+                    color = MaterialTheme.colors.secondary,
+                )
+            }
+
+        }
+
+        if (memories != null && memories.value != null) {
+            Column(Modifier.verticalScroll(rememberScrollState())) {
+                memories.value!!.forEach { memory ->
+                    ShowMemoryCard(memory)
+                }
             }
         }
     }
@@ -66,8 +90,8 @@ fun ShowMemoryCard(memory: Memory) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            /*.fillMaxHeight(0.22F)*/
-            .padding(15.dp),
+            .padding(20.dp, 20.dp, 20.dp, 0.dp)
+            .clip(RoundedCornerShape(10.dp)),
         elevation = 20.dp
     ) {
         Column(modifier = Modifier.padding(5.dp)) {
@@ -82,15 +106,19 @@ fun ShowMemoryCard(memory: Memory) {
                     textAlign = TextAlign.Center
                 )
             )
-            Row() {
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(10.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 if (bitmap != null) {
                     Image(
                         bitmap = BitmapFactory.decodeFile(memory.imageUri).asImageBitmap(),
                         contentDescription = "strawberries",
                         /*contentScale = ContentScale.Crop,*/
                         modifier = Modifier
-                            .padding(start = 10.dp, bottom = 10.dp)
-                            .fillMaxWidth(0.3F)
+                            .fillMaxWidth(0.4F)
                             .clip(RoundedCornerShape(10.dp))
                         /*.border(
                             3.dp,
@@ -99,34 +127,33 @@ fun ShowMemoryCard(memory: Memory) {
                         )*/
                     )
                 }
-                Text(
-                    text = memory.description, modifier = Modifier
-                        .align(CenterVertically)
-                        .padding(start = 10.dp, end = 5.dp, bottom = 10.dp)
-                )
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(start = 10.dp)
+                ) {
+                    //Icon(painter = painterResource(id = R.drawable.c))
+                    Row(Modifier.fillMaxWidth()) {
+                        Icon(Icons.Outlined.LocationOn, contentDescription = null)
+                        Text(text = " HERE ")
+                    }
+                    Spacer(modifier = Modifier.height(5.dp))
+                    Row(Modifier.fillMaxWidth()) {
+                        Icon(Icons.Outlined.Face, contentDescription = null)
+                        Text(text = " DATE ")
+                    }
+                    Spacer(modifier = Modifier.height(5.dp))
+                    Row(Modifier.fillMaxWidth()) {
+                        Icon(Icons.Outlined.MoreVert, contentDescription = null)
+                        Text(text = " LIGHT ")
+                    }
+                }
             }
             /*Icon(
                 painter = painterResource(id= R.drawable.ic_calendar),
                 contentDescription = null
             )*/
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-            ) {
-                //Icon(painter = painterResource(id = R.drawable.c))
-                Row(Modifier.fillMaxWidth(0.3F)) {
-                    Icon(Icons.Outlined.LocationOn, contentDescription = null)
-                    Text(text = " HERE ")
-                }
-                Row(Modifier.fillMaxWidth(0.4F)) {
-                    Icon(Icons.Outlined.Face, contentDescription = null)
-                    Text(text = " DATE ")
-                }
-                Row(Modifier.fillMaxWidth(0.5F)) {
-                    Icon(Icons.Outlined.MoreVert, contentDescription = null)
-                    Text(text = " LIGHT ")
-                }
-            }
         }
 
     }
