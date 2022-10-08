@@ -30,8 +30,8 @@ import fi.metropolia.project.souvenirapp.R
 import fi.metropolia.project.souvenirapp.view.components.BottomBarScreen
 import fi.metropolia.project.souvenirapp.viewmodel.CameraViewModel
 import fi.metropolia.project.souvenirapp.viewmodel.LightSensorViewModel
+import fi.metropolia.project.souvenirapp.viewmodel.LocationViewModel
 import fi.metropolia.project.souvenirapp.viewmodel.MemoryDatabaseViewModel
-import kotlin.math.floor
 
 
 @Composable
@@ -39,11 +39,21 @@ fun CreateScreen(
     memoryDatabaseViewModel: MemoryDatabaseViewModel,
     cameraViewModel: CameraViewModel,
     sensorViewModel: LightSensorViewModel,
+    locationViewModel: LocationViewModel,
     navController: NavController
 ) {
+    val locationPoint = locationViewModel.locationPoint.observeAsState()
+
     val txtTitle = remember { mutableStateOf("") }
     val txtDescription = remember { mutableStateOf("") }
-    val txtLocation = remember { mutableStateOf("") }
+    val txtLocation = remember {
+        mutableStateOf(
+            ""
+        )
+    }
+    if (locationPoint.value != null) {
+        txtLocation.value = locationViewModel.getAddress(locationPoint.value!!)
+    }
 
     val isPictureTaken = remember {
         mutableStateOf(false)
@@ -101,8 +111,11 @@ fun CreateScreen(
                         style = MaterialTheme.typography.subtitle2
                     )
                 }
-            } else if(bitmap != null && bitmap.value != null){
-                Image(bitmap = bitmap.value!!.asImageBitmap() , contentDescription = "Camera picture")
+            } else if (bitmap != null && bitmap.value != null) {
+                Image(
+                    bitmap = bitmap.value!!.asImageBitmap(),
+                    contentDescription = "Camera picture"
+                )
             }
         }
         Spacer(modifier = Modifier.fillMaxHeight(0.05f))
@@ -162,8 +175,7 @@ fun CreateScreen(
                     memoryDatabaseViewModel.createNewMemory(
                         txtTitle.value,
                         txtDescription.value,
-                        0.0,
-                        0.0,
+                        txtLocation.value,
                         cameraViewModel.imageAbsolutePath
                     )
                     navController.navigate(route = BottomBarScreen.ListScreen.route)

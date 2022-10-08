@@ -11,15 +11,14 @@ data class Memory(
     @PrimaryKey(autoGenerate = true) val id: Int,
     @ColumnInfo(name = "title") var title: String,
     @ColumnInfo(name = "description") val description: String,
-    @ColumnInfo(name = "latitude") val latitude: Double,
-    @ColumnInfo(name = "longitude") val longitude: Double,
+    @ColumnInfo(name = "location") val location: String,
     @ColumnInfo(name = "imageUri") val imageUri: String,
 ) {
     override fun toString(): String {
         return "id: ${id}\n" +
                 "title: ${title}\n" +
                 "description: ${description}\n" +
-                "location: ($latitude $longitude)\n" +
+                "location: ($location)\n" +
                 "image: $imageUri"
     }
 }

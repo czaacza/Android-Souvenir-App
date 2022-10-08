@@ -9,12 +9,9 @@ import androidx.preference.PreferenceManager
 import fi.metropolia.project.souvenirapp.model.logMemories
 import fi.metropolia.project.souvenirapp.view.screens.getMap
 import fi.metropolia.project.souvenirapp.view.theme.SouvenirAppTheme
-import fi.metropolia.project.souvenirapp.viewmodel.CameraViewModel
 import fi.metropolia.project.souvenirapp.model.trysensor
 import fi.metropolia.project.souvenirapp.view.MainScreen
-import fi.metropolia.project.souvenirapp.viewmodel.LightSensorViewModel
-import fi.metropolia.project.souvenirapp.viewmodel.MapViewModel
-import fi.metropolia.project.souvenirapp.viewmodel.MemoryDatabaseViewModel
+import fi.metropolia.project.souvenirapp.viewmodel.*
 import org.osmdroid.config.Configuration
 
 class MainActivity : ComponentActivity() {
@@ -25,22 +22,30 @@ class MainActivity : ComponentActivity() {
 
     private lateinit var sensorViewModel: LightSensorViewModel
     private lateinit var sensorManager: SensorManager
+    private lateinit var locationViewModel: LocationViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Configuration.getInstance()
-            .load(application, PreferenceManager.getDefaultSharedPreferences(application))
+
 
         memoryDatabaseViewModel = MemoryDatabaseViewModel(application)
         cameraViewModel = CameraViewModel(application)
         sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
         sensorViewModel = LightSensorViewModel(sensorManager)
+        locationViewModel = LocationViewModel(application, this)
+
 //        memoryDatabaseViewModel.clear()
 
         setContent {
             mapViewModel = MapViewModel(application, getMap(context = applicationContext))
             SouvenirAppTheme {
-                MainScreen(mapViewModel, memoryDatabaseViewModel, cameraViewModel, sensorViewModel)
+                MainScreen(
+                    mapViewModel,
+                    memoryDatabaseViewModel,
+                    cameraViewModel,
+                    sensorViewModel,
+                    locationViewModel
+                )
                 trysensor(sensorManager)
             }
         }

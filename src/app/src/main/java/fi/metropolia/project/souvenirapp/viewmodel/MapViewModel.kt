@@ -18,14 +18,17 @@ class MapViewModel(application: Application, var map: MapView) : AndroidViewMode
 
     val app = application
 
-    init {
+    init{
         Configuration.getInstance()
             .load(app, PreferenceManager.getDefaultSharedPreferences(app))
-
         map.setTileSource(TileSourceFactory.MAPNIK)
-        map.setMultiTouchControls(true)
+    }
+
+    fun initialize() {
         map.controller.setZoom(9.0)
-        map.controller.setCenter(GeoPoint(100.0, 100.0))
+        map.setMultiTouchControls(true)
+        map.controller.setCenter(GeoPoint(22.0, 100.0))
+
     }
 
     @Composable

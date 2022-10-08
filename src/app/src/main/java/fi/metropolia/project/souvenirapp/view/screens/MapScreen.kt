@@ -17,21 +17,7 @@ import org.osmdroid.views.MapView
 
 
 @Composable
-fun MapScreen(mapViewModel: MapViewModel,) {
-    val isClicked = remember{ mutableStateOf(false)}
-    Button(onClick = {
-        mapViewModel.initialize()
-        isClicked.value = !isClicked.value
-    }) {
-        Text(text = "Show map")
-    }
-    if(isClicked.value){
-        ShowMap(mapViewModel)
-    }
-}
-
-@Composable
-fun ShowMap(
+fun MapScreen(
     mapViewModel: MapViewModel){
     Box(modifier = Modifier.fillMaxHeight(0.9f)) {
         AndroidView({ mapViewModel.map })

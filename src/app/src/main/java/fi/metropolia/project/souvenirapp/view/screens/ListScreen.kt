@@ -136,7 +136,7 @@ fun ShowMemoryCard(memory: Memory) {
                     //Icon(painter = painterResource(id = R.drawable.c))
                     Row(Modifier.fillMaxWidth()) {
                         Icon(Icons.Outlined.LocationOn, contentDescription = null)
-                        Text(text = " HERE ")
+                        Text(text = "${memory.location} ")
                     }
                     Spacer(modifier = Modifier.height(5.dp))
                     Row(Modifier.fillMaxWidth()) {
