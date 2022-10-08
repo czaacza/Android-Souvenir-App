@@ -6,9 +6,12 @@ import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.preference.PreferenceManager
 import fi.metropolia.project.souvenirapp.R
 import fi.metropolia.project.souvenirapp.view.screens.getMap
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
@@ -19,24 +22,26 @@ class MapViewModel(application: Application, var map: MapView) : AndroidViewMode
 
     val app = application
 
-    init{
+    init {
         Configuration.getInstance()
             .load(app, PreferenceManager.getDefaultSharedPreferences(app))
         map.setTileSource(TileSourceFactory.MAPNIK)
     }
 
     fun initialize() {
-        map.controller.setZoom(9.0)
-        map.setMultiTouchControls(true)
-        map.zoomController.setVisibility(CustomZoomButtonsController.Visibility.NEVER)
+        viewModelScope.launch(Dispatchers.Default) {
+            map.controller.setZoom(9.0)
+            map.setMultiTouchControls(true)
+            map.zoomController.setVisibility(CustomZoomButtonsController.Visibility.NEVER)
+        }
     }
 
-    fun centerMap(centrePoint: GeoPoint){
+    fun centerMap(centrePoint: GeoPoint) {
         map.controller.setCenter(centrePoint)
     }
 
     @Composable
-    fun setMap(){
+    fun setMap() {
         map = getMap(app)
     }
 }

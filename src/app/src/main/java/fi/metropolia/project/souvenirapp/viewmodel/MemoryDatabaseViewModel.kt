@@ -16,7 +16,6 @@ import java.util.*
 class MemoryDatabaseViewModel(application: Application) : AndroidViewModel(application) {
     val database = MemoryDatabase.get(application)
     val memories = MutableLiveData<List<Memory>?>()
-    val areMemoriesLoaded = MutableLiveData(false)
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
@@ -32,19 +31,19 @@ class MemoryDatabaseViewModel(application: Application) : AndroidViewModel(appli
         database.memoryDao().insert(memory)
     }
 
-    fun delete(memory: Memory) {
+    suspend fun delete(memory: Memory) {
         viewModelScope.launch {
             database.memoryDao().delete(memory)
         }
     }
 
-    fun update(memory: Memory) {
+    suspend fun update(memory: Memory) {
         viewModelScope.launch {
             database.memoryDao().update(memory)
         }
     }
 
-    fun clear() {
+    suspend fun clear() {
         viewModelScope.launch {
             database.memoryDao().clearTable();
         }

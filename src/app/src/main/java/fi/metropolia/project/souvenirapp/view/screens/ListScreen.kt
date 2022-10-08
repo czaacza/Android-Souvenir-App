@@ -27,11 +27,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import fi.metropolia.project.souvenirapp.model.data.Memory
-import fi.metropolia.project.souvenirapp.model.getBitmapFromSampleFile
 import fi.metropolia.project.souvenirapp.view.components.BottomBarScreen
 import fi.metropolia.project.souvenirapp.view.theme.LightBlue1
 import fi.metropolia.project.souvenirapp.view.theme.LightBlueTint
 import fi.metropolia.project.souvenirapp.viewmodel.MemoryDatabaseViewModel
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.io.IOException
 
 
@@ -101,20 +102,9 @@ fun ListScreen(
     }
 }
 
-fun Context.assetsToBitmap(fileName: String): Bitmap? {
-    return try {
-        with(assets.open(fileName)) {
-            BitmapFactory.decodeStream(this)
-        }
-    } catch (e: IOException) {
-        null
-    }
-}
-
 @Composable
 fun ShowMemoryCard(memory: Memory) {
     val context = LocalContext.current
-    val bitmap: Bitmap? = getBitmapFromSampleFile()
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -140,7 +130,6 @@ fun ShowMemoryCard(memory: Memory) {
                     .padding(10.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                if (bitmap != null) {
                     Image(
                         bitmap = BitmapFactory.decodeFile(memory.imageUri).asImageBitmap(),
                         contentDescription = "strawberries",
@@ -148,7 +137,6 @@ fun ShowMemoryCard(memory: Memory) {
                             .fillMaxWidth(0.4F)
                             .clip(RoundedCornerShape(10.dp))
                     )
-                }
 
                 Column(
                     modifier = Modifier
@@ -172,10 +160,6 @@ fun ShowMemoryCard(memory: Memory) {
                     }
                 }
             }
-            /*Icon(
-                painter = painterResource(id= R.drawable.ic_calendar),
-                contentDescription = null
-            )*/
         }
 
     }
