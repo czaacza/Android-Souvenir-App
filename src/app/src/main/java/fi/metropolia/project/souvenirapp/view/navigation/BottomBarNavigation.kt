@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import fi.metropolia.project.souvenirapp.view.components.BottomBarScreen
 import fi.metropolia.project.souvenirapp.view.screens.CreateScreen
 import fi.metropolia.project.souvenirapp.view.screens.ListScreen
+import fi.metropolia.project.souvenirapp.view.screens.MapScreen
 import fi.metropolia.project.souvenirapp.viewmodel.CameraViewModel
 import fi.metropolia.project.souvenirapp.viewmodel.LightSensorViewModel
 import fi.metropolia.project.souvenirapp.viewmodel.MapViewModel
@@ -26,7 +27,8 @@ fun BottomBarNavigation(
         startDestination = BottomBarScreen.ListScreen.route
     ) {
         composable(BottomBarScreen.MapScreen.route) {
-//            MapScreen(mapViewModel)
+            mapViewModel.setMap()
+            MapScreen(mapViewModel)
         }
         composable(BottomBarScreen.ListScreen.route) {
             ListScreen(memoryDatabaseViewModel)
