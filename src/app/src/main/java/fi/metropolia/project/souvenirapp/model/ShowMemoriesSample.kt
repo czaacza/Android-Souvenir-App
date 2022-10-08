@@ -24,6 +24,7 @@ fun ShowMemories(memoriesList: List<Memory>, context: Context) {
                 Text("Title: ${memory.title}")
                 Text("Description: ${memory.description}")
                 Text("Location: ${memory.location}")
+                Text("Date: ${memory.date}")
             }
         }
     }
@@ -38,6 +39,8 @@ fun createSampleMemories(): List<Memory> {
             title = "memory${i}",
             description = "memory${i} sample description",
             location = "Random locaiton",
+            date = "01-09-2022",
+            light = 111.11f,
             imageUri = Uri.fromFile(File("file:///android_asset/strawberries.jpg")).toString()
         )
         list.add(memory)

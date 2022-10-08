@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import fi.metropolia.project.souvenirapp.R
 import fi.metropolia.project.souvenirapp.view.components.BottomBarScreen
+import fi.metropolia.project.souvenirapp.view.theme.LightBlueTint
 import fi.metropolia.project.souvenirapp.viewmodel.CameraViewModel
 import fi.metropolia.project.souvenirapp.viewmodel.LightSensorViewModel
 import fi.metropolia.project.souvenirapp.viewmodel.LocationViewModel
@@ -51,8 +52,14 @@ fun CreateScreen(
             ""
         )
     }
+    val txtLight = remember { mutableStateOf("") }
+    val lightState = sensorViewModel.sunData.observeAsState()
+
     if (locationPoint.value != null) {
         txtLocation.value = locationViewModel.getAddress(locationPoint.value!!)
+    }
+    if (lightState.value != null) {
+        txtLight.value = lightState.value.toString()
     }
 
     val isPictureTaken = remember {
@@ -65,11 +72,12 @@ fun CreateScreen(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .fillMaxHeight()
+            .fillMaxHeight(0.90f)
     ) {
         TopAppBar(
             modifier = Modifier
                 .fillMaxWidth(),
+            backgroundColor = LightBlueTint
         ) {
             Row(
                 modifier = Modifier
@@ -83,80 +91,93 @@ fun CreateScreen(
                     color = MaterialTheme.colors.secondary,
                 )
             }
-
         }
 
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(0.4f)
-                .padding(10.dp, 10.dp, 10.dp, 0.dp)
-                .clip(shape = MaterialTheme.shapes.large)
-                .background(MaterialTheme.colors.surface)
-                .selectable(true, onClick = {
-                    if (!isPictureTaken.value) {
-                        cameraViewModel.launch()
-                        isPictureTaken.value = true
-                    }
-                }),
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.SpaceBetween
         ) {
-            if (!isPictureTaken.value) {
-                Row(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.add_picture),
-                        style = MaterialTheme.typography.subtitle2
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.4f)
+                    .padding(10.dp, 10.dp, 10.dp, 0.dp)
+                    .clip(shape = MaterialTheme.shapes.large)
+                    .background(MaterialTheme.colors.surface)
+                    .selectable(true, onClick = {
+                        if (!isPictureTaken.value) {
+                            cameraViewModel.launch()
+                            isPictureTaken.value = true
+                        }
+                    }),
+            ) {
+                if (!isPictureTaken.value) {
+                    Row(
+                        modifier = Modifier.fillMaxSize(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.add_picture),
+                            style = MaterialTheme.typography.subtitle2
+                        )
+                    }
+                } else if (bitmap != null && bitmap.value != null) {
+                    Image(
+                        bitmap = bitmap.value!!.asImageBitmap(),
+                        contentDescription = "Camera picture"
                     )
                 }
-            } else if (bitmap != null && bitmap.value != null) {
-                Image(
-                    bitmap = bitmap.value!!.asImageBitmap(),
-                    contentDescription = "Camera picture"
-                )
             }
-        }
-        Spacer(modifier = Modifier.fillMaxHeight(0.05f))
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 10.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            OutlinedTextField(
-                value = txtTitle.value,
-                label = {
-                    Text(text = stringResource(id = R.string.title))
-                },
-                singleLine = true,
-                textStyle = TextStyle.Default.copy(fontSize = 22.sp),
-                modifier = Modifier.fillMaxWidth(),
-                onValueChange = { txtTitle.value = it }
-            )
-            OutlinedTextField(
-                value = txtDescription.value,
-                label = {
-                    Text(text = stringResource(id = R.string.description))
-                },
-                singleLine = false,
+//        Spacer(modifier = Modifier.fillMaxHeight(0.05f))
+            Column(
                 modifier = Modifier
-                    .fillMaxHeight(0.3f)
-                    .fillMaxWidth(),
-                onValueChange = { txtDescription.value = it }
-            )
-            OutlinedTextField(
-                value = txtLocation.value,
-                label = {
-                    Text(text = stringResource(id = R.string.location))
-                },
-                modifier = Modifier
-                    .fillMaxWidth(),
-                onValueChange = { txtLocation.value = it }
-            )
+                    .fillMaxWidth()
+                    .padding(horizontal = 10.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                OutlinedTextField(
+                    value = txtTitle.value,
+                    label = {
+                        Text(text = stringResource(id = R.string.title))
+                    },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth(),
+                    onValueChange = { txtTitle.value = it }
+                )
+                OutlinedTextField(
+                    value = txtDescription.value,
+                    label = {
+                        Text(text = stringResource(id = R.string.description))
+                    },
+                    singleLine = false,
+                    modifier = Modifier
+                        .fillMaxHeight(0.3f)
+                        .fillMaxWidth(),
+                    onValueChange = { txtDescription.value = it }
+                )
+                OutlinedTextField(
+                    value = txtLocation.value,
+                    label = {
+                        Text(text = stringResource(id = R.string.location))
+                    },
+                    enabled = false,
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    onValueChange = { txtLocation.value = it }
+                )
+                OutlinedTextField(
+                    value = txtLight.value,
+                    label = {
+                        Text(text = "Light")
+                    },
+                    enabled = false,
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth(),
+                    onValueChange = { txtTitle.value = it }
+                )
 
-            Spacer(modifier = Modifier.fillMaxHeight(0.3f))
+            }
 
             ExtendedFloatingActionButton(
                 backgroundColor = MaterialTheme.colors.secondary,
@@ -170,17 +191,17 @@ fun CreateScreen(
                 text = {
                     Text(text = "Done", color = MaterialTheme.colors.primary)
                 },
-                modifier = Modifier,
+                modifier = Modifier.align(Alignment.CenterHorizontally),
                 onClick = {
                     memoryDatabaseViewModel.createNewMemory(
                         txtTitle.value,
                         txtDescription.value,
                         txtLocation.value,
+                        txtLight.value.toFloat(),
                         cameraViewModel.imageAbsolutePath
                     )
                     navController.navigate(route = BottomBarScreen.ListScreen.route)
                 })
         }
-
     }
 }

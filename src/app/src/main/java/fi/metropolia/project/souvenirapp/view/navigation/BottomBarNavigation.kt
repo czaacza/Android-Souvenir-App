@@ -2,6 +2,9 @@ package fi.metropolia.project.souvenirapp.view.navigation
 
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -26,12 +29,24 @@ fun BottomBarNavigation(
         startDestination = BottomBarScreen.ListScreen.route
     ) {
         composable(BottomBarScreen.MapScreen.route) {
+
             mapViewModel.setMap()
             mapViewModel.initialize()
+
+            val locationPoint = locationViewModel.locationPoint.observeAsState()
+            val isMapCentered = remember { mutableStateOf(false) }
+            locationViewModel.startLocationTracking()
+            if (locationPoint.value != null && !isMapCentered.value
+            ) {
+                mapViewModel.centerMap(locationPoint.value!!)
+                isMapCentered.value = true
+                locationViewModel.stopLocationTracking()
+            }
+
             MapScreen(mapViewModel)
         }
         composable(BottomBarScreen.ListScreen.route) {
-            ListScreen(memoryDatabaseViewModel)
+            ListScreen(memoryDatabaseViewModel, navController)
         }
         composable(BottomBarScreen.CreateMemoryScreen.route) {
             locationViewModel.startLocationTracking()

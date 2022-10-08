@@ -12,6 +12,8 @@ data class Memory(
     @ColumnInfo(name = "title") var title: String,
     @ColumnInfo(name = "description") val description: String,
     @ColumnInfo(name = "location") val location: String,
+    @ColumnInfo(name = "date") val date: String,
+    @ColumnInfo(name = "light") val light: Float,
     @ColumnInfo(name = "imageUri") val imageUri: String,
 ) {
     override fun toString(): String {
@@ -19,6 +21,8 @@ data class Memory(
                 "title: ${title}\n" +
                 "description: ${description}\n" +
                 "location: ($location)\n" +
+                "date: $date\n" +
+                "light: $light\n" +
                 "image: $imageUri"
     }
 }

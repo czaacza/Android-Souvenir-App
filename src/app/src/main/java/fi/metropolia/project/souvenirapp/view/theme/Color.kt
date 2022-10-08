@@ -2,9 +2,9 @@ package fi.metropolia.project.souvenirapp.view.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple200 = Color(0xFF2196F3)
-val Purple500 = Color(0xFF03A9F4)
-val Purple700 = Color(0xFF0288D1)
+val LightBlue1 = Color(0xFF74C0FC)
+val LightBlueTint = Color(0xFFA5D8FF)
+val LightBlueTint2 = Color(0xFFE7F5FF)
 val Teal200 = Color(0xFF03DAC5)
 
 val LightGray = Color(0xFFEEEEEE)

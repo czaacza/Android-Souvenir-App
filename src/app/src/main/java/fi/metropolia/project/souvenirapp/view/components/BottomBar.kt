@@ -15,6 +15,7 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import fi.metropolia.project.souvenirapp.view.theme.LightBlueTint
 
 @Composable
 fun BottomBar(navController: NavHostController) {
@@ -27,6 +28,7 @@ fun BottomBar(navController: NavHostController) {
     val currentDestination = currentStackEntry?.destination
 
     BottomNavigation(
+        backgroundColor = LightBlueTint
     ) {
         screens.forEach { screen ->
             BottomNavigationItem(

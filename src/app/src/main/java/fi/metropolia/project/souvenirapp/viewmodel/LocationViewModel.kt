@@ -24,7 +24,7 @@ class LocationViewModel(application: Application, activity: Activity) :
     }
 
     fun stopLocationTracking() {
-        locationManager.startLocationTracking()
+        locationManager.stopLocationTracking()
         isLocationTracked.value = false
     }
 

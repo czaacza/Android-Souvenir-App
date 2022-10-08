@@ -3,15 +3,12 @@ package fi.metropolia.project.souvenirapp.view.screens
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.util.Log
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Face
 import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.icons.outlined.MoreVert
@@ -21,7 +18,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
@@ -29,15 +25,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import fi.metropolia.project.souvenirapp.model.data.Memory
 import fi.metropolia.project.souvenirapp.model.getBitmapFromSampleFile
+import fi.metropolia.project.souvenirapp.view.components.BottomBarScreen
+import fi.metropolia.project.souvenirapp.view.theme.LightBlue1
+import fi.metropolia.project.souvenirapp.view.theme.LightBlueTint
 import fi.metropolia.project.souvenirapp.viewmodel.MemoryDatabaseViewModel
 import java.io.IOException
 
 
 @Composable
 fun ListScreen(
-    memoryDatabaseViewModel: MemoryDatabaseViewModel
+    memoryDatabaseViewModel: MemoryDatabaseViewModel,
+    navController: NavController
 ) {
     val memories = memoryDatabaseViewModel.memories.observeAsState()
 
@@ -47,6 +48,7 @@ fun ListScreen(
         TopAppBar(
             modifier = Modifier
                 .fillMaxWidth(),
+            backgroundColor = LightBlueTint
         ) {
             Row(
                 modifier = Modifier
@@ -60,16 +62,42 @@ fun ListScreen(
                     color = MaterialTheme.colors.secondary,
                 )
             }
-
         }
-
-        if (memories != null && memories.value != null) {
-            Column(Modifier.verticalScroll(rememberScrollState())) {
+        Column(Modifier.verticalScroll(rememberScrollState())) {
+            if (memories != null && memories.value != null) {
                 memories.value!!.forEach { memory ->
                     ShowMemoryCard(memory)
                 }
             }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 20.dp),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Button(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(10.dp)),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = LightBlue1),
+                    onClick = {
+                        navController.navigate(BottomBarScreen.CreateMemoryScreen.route)
+                    }
+                ) {
+                    Icon(
+                        Icons.Outlined.Add,
+                        tint = MaterialTheme.colors.secondary,
+                        contentDescription = "Add icon"
+                    )
+                    Text(
+                        text = "Create new memory",
+                        color = MaterialTheme.colors.secondary,
+                        style = MaterialTheme.typography.body1
+                    )
+                }
+            }
+
         }
+
     }
 }
 
@@ -116,15 +144,9 @@ fun ShowMemoryCard(memory: Memory) {
                     Image(
                         bitmap = BitmapFactory.decodeFile(memory.imageUri).asImageBitmap(),
                         contentDescription = "strawberries",
-                        /*contentScale = ContentScale.Crop,*/
                         modifier = Modifier
                             .fillMaxWidth(0.4F)
                             .clip(RoundedCornerShape(10.dp))
-                        /*.border(
-                            3.dp,
-                            Color(0xFF000000),
-                            RoundedCornerShape(10.dp)
-                        )*/
                     )
                 }
 
@@ -141,12 +163,12 @@ fun ShowMemoryCard(memory: Memory) {
                     Spacer(modifier = Modifier.height(5.dp))
                     Row(Modifier.fillMaxWidth()) {
                         Icon(Icons.Outlined.Face, contentDescription = null)
-                        Text(text = " DATE ")
+                        Text(text = " ${memory.date} ")
                     }
                     Spacer(modifier = Modifier.height(5.dp))
                     Row(Modifier.fillMaxWidth()) {
                         Icon(Icons.Outlined.MoreVert, contentDescription = null)
-                        Text(text = " LIGHT ")
+                        Text(text = " ${memory.light} ")
                     }
                 }
             }

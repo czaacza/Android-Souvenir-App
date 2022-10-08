@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.preference.PreferenceManager
 import fi.metropolia.project.souvenirapp.model.logMemories
 import fi.metropolia.project.souvenirapp.view.screens.getMap
@@ -38,6 +39,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             mapViewModel = MapViewModel(application, getMap(context = applicationContext))
+//            Log.d("DBG", "${sensorViewModel.sunData.observeAsState().value}")
             SouvenirAppTheme {
                 MainScreen(
                     mapViewModel,

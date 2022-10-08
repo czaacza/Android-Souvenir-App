@@ -12,6 +12,7 @@ import fi.metropolia.project.souvenirapp.view.screens.getMap
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
+import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapView
 
 class MapViewModel(application: Application, var map: MapView) : AndroidViewModel(application) {
@@ -27,8 +28,11 @@ class MapViewModel(application: Application, var map: MapView) : AndroidViewMode
     fun initialize() {
         map.controller.setZoom(9.0)
         map.setMultiTouchControls(true)
-        map.controller.setCenter(GeoPoint(22.0, 100.0))
+        map.zoomController.setVisibility(CustomZoomButtonsController.Visibility.NEVER)
+    }
 
+    fun centerMap(centrePoint: GeoPoint){
+        map.controller.setCenter(centrePoint)
     }
 
     @Composable
