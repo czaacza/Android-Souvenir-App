@@ -19,13 +19,17 @@ import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import coil.size.Size
+import fi.metropolia.project.souvenirapp.R
 import fi.metropolia.project.souvenirapp.model.data.Memory
 import fi.metropolia.project.souvenirapp.view.components.BottomBarScreen
 import fi.metropolia.project.souvenirapp.view.theme.LightBlue1
@@ -125,6 +129,7 @@ fun ShowMemoryCard(memory: Memory) {
                 )
             )
             Row(
+
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(10.dp),
@@ -145,18 +150,24 @@ fun ShowMemoryCard(memory: Memory) {
                 ) {
                     //Icon(painter = painterResource(id = R.drawable.c))
                     Row(Modifier.fillMaxWidth()) {
-                        Icon(Icons.Outlined.LocationOn, contentDescription = null)
-                        Text(text = "${memory.location} ")
+                        Image(painter = painterResource(id = R.drawable.ic_explore), contentDescription = null,Modifier
+                            .size(25.dp,25.dp)
+                            .padding(top=2.dp,end=4.dp))
+                        Text(text = "${memory.location} ",modifier = Modifier.padding(bottom=3.dp))
                     }
                     Spacer(modifier = Modifier.height(5.dp))
                     Row(Modifier.fillMaxWidth()) {
-                        Icon(Icons.Outlined.Face, contentDescription = null)
-                        Text(text = " ${memory.date} ")
+                        Image(painterResource(R.drawable.ic_calendar),contentDescription= null,Modifier
+                            .size(25.dp,25.dp)
+                            .padding(bottom = 4.dp, end = 3.dp))
+                        Text(text = " ${memory.date} ",modifier = Modifier.padding(top=3.dp))
                     }
                     Spacer(modifier = Modifier.height(5.dp))
                     Row(Modifier.fillMaxWidth()) {
-                        Icon(Icons.Outlined.MoreVert, contentDescription = null)
-                        Text(text = " ${memory.light} ")
+                        Image(painter = painterResource(id = R.drawable.ic_light), contentDescription = null,Modifier
+                            .size(25.dp,25.dp)
+                            .padding(bottom = 3.dp))
+                        Text(text = " ${memory.light} ",modifier = Modifier.padding(top=3.dp))
                     }
                 }
             }

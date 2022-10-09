@@ -5,8 +5,12 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.res.painterResource
+import androidx.core.content.res.ResourcesCompat
 import androidx.preference.PreferenceManager
+import fi.metropolia.project.souvenirapp.R
 import fi.metropolia.project.souvenirapp.model.logMemories
 import fi.metropolia.project.souvenirapp.view.screens.getMap
 import fi.metropolia.project.souvenirapp.view.theme.SouvenirAppTheme
