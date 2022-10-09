@@ -36,7 +36,6 @@ class MapViewModel(
     }
 
     fun initialize() {
-        Log.d("DBG", "initialize()")
         map.controller.setZoom(9.0)
         map.setMultiTouchControls(true)
         map.zoomController.setVisibility(CustomZoomButtonsController.Visibility.NEVER)

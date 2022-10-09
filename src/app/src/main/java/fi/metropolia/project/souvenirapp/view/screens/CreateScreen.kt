@@ -72,7 +72,7 @@ fun CreateScreen(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .fillMaxHeight(0.90f)
+            .fillMaxHeight()
     ) {
         TopAppBar(
             modifier = Modifier
@@ -94,7 +94,7 @@ fun CreateScreen(
         }
 
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxWidth().fillMaxHeight(0.9f),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             Box(
