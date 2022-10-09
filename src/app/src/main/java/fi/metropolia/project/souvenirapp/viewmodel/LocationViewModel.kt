@@ -38,4 +38,15 @@ class LocationViewModel(application: Application, activity: Activity) :
 
         return currentAddress
     }
+
+    fun getGeoPoint(address: String) : GeoPoint? {
+        val geocoder = Geocoder(app)
+        var currentGeoPoint: GeoPoint? = null
+
+        val geoPointList = geocoder.getFromLocationName(address, 5) ?: return null
+        val currentLocation = geoPointList[0]
+        currentGeoPoint = GeoPoint(currentLocation.latitude, currentLocation.longitude)
+
+        return currentGeoPoint
+    }
 }

@@ -28,7 +28,6 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
         memoryDatabaseViewModel = MemoryDatabaseViewModel(application)
         cameraViewModel = CameraViewModel(application)
         sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
@@ -38,8 +37,8 @@ class MainActivity : ComponentActivity() {
 //        memoryDatabaseViewModel.clear()
 
         setContent {
-            mapViewModel = MapViewModel(application, getMap(context = applicationContext))
-//            Log.d("DBG", "${sensorViewModel.sunData.observeAsState().value}")
+            mapViewModel = MapViewModel(application, getMap(context = this), locationViewModel)
+
             SouvenirAppTheme {
                 MainScreen(
                     mapViewModel,

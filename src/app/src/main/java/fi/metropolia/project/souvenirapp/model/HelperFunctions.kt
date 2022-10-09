@@ -24,3 +24,4 @@ fun trysensor(sensorManager: SensorManager) {
         false
     }
 }
+
