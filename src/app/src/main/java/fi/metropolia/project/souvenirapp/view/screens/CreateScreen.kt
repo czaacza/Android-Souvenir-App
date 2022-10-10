@@ -1,6 +1,7 @@
 package fi.metropolia.project.souvenirapp.view.screens
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -37,7 +38,7 @@ import fi.metropolia.project.souvenirapp.viewmodel.MemoryDatabaseViewModel
 import fi.metropolia.project.souvenirapp.view.activities.MainActivity
 
 
-@SuppressLint("MissingPermission")
+
 @Composable
 fun CreateScreen(
     memoryDatabaseViewModel: MemoryDatabaseViewModel,
@@ -64,17 +65,6 @@ fun CreateScreen(
     if (lightState.value != null) {
         txtLight.value = lightState.value.toString()
     }
-
-    val cts = CancellationTokenSource()
-    var fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(MainActivity())
-    /*if (ActivityCompat.checkSelfPermission(LocalContext.current, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-        && ActivityCompat.checkSelfPermission(LocalContext.current, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
-    ) {
-        Log.d("DBG", "No location access")
-        ActivityCompat.requestPermissions(MainActivity(), arrayOf(Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION),1)
-    }*/
-    var location = fusedLocationProviderClient.getCurrentLocation(Priority.PRIORITY_BALANCED_POWER_ACCURACY, cts.token)
-
 
     val isPictureTaken = remember {
         mutableStateOf(false)
@@ -193,6 +183,7 @@ fun CreateScreen(
 
             }
 
+            val context = LocalContext.current
             ExtendedFloatingActionButton(
                 backgroundColor = MaterialTheme.colors.secondary,
                 icon = {
@@ -207,15 +198,20 @@ fun CreateScreen(
                 },
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 onClick = {
-                    memoryDatabaseViewModel.createNewMemory(
-                        txtTitle.value,
-                        txtDescription.value,
-                        txtLocation.value,
-                        txtLight.value.toFloat(),
-                        cameraViewModel.imageAbsolutePath
-                    )
-                    navController.navigate(route = BottomBarScreen.ListScreen.route)
+                    if(txtTitle.value != "" && txtDescription.value != "" && bitmap != null && bitmap.value != null) {
+                        memoryDatabaseViewModel.createNewMemory(
+                            txtTitle.value,
+                            txtDescription.value,
+                            txtLocation.value,
+                            txtLight.value.toFloat(),
+                            cameraViewModel.imageAbsolutePath
+                        )
+                        navController.navigate(route = BottomBarScreen.ListScreen.route)
+                    } else {
+                        Toast.makeText(context,"You should complete all of the textFields", Toast.LENGTH_SHORT).show()
+                    }
                 })
+
         }
     }
 }

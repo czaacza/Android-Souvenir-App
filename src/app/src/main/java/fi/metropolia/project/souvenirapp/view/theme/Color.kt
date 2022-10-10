@@ -14,3 +14,5 @@ val White1 = Color(0xFFF8F9FA)
 
 
 val IconColor = Color(0xFF495057)
+//FOR DARKTHEME
+val darkblue = Color(0xFF124272)
