@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.res.painterResource
 import androidx.core.content.res.ResourcesCompat
@@ -19,6 +20,7 @@ import fi.metropolia.project.souvenirapp.view.MainScreen
 import fi.metropolia.project.souvenirapp.viewmodel.*
 import org.osmdroid.config.Configuration
 
+@ExperimentalAnimationApi
 class MainActivity : ComponentActivity() {
 
     private lateinit var mapViewModel: MapViewModel
@@ -38,7 +40,8 @@ class MainActivity : ComponentActivity() {
         sensorViewModel = LightSensorViewModel(sensorManager)
         locationViewModel = LocationViewModel(application, this)
 
-//        memoryDatabaseViewModel.clear()
+
+        memoryDatabaseViewModel.clear()
 
         setContent {
             mapViewModel = MapViewModel(application, getMap(context = this), locationViewModel)
@@ -49,7 +52,7 @@ class MainActivity : ComponentActivity() {
                     memoryDatabaseViewModel,
                     cameraViewModel,
                     sensorViewModel,
-                    locationViewModel
+                    locationViewModel,
                 )
                 trysensor(sensorManager)
             }

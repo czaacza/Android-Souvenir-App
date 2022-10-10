@@ -43,7 +43,7 @@ class MemoryDatabaseViewModel(application: Application) : AndroidViewModel(appli
         }
     }
 
-    suspend fun clear() {
+    fun clear() {
         viewModelScope.launch {
             database.memoryDao().clearTable();
         }
