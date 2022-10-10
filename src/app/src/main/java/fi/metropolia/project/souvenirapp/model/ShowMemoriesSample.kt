@@ -23,11 +23,8 @@ fun ShowMemories(memoriesList: List<Memory>, context: Context) {
             Column() {
                 Text("Title: ${memory.title}")
                 Text("Description: ${memory.description}")
-                Text("Location: (${memory.latitude} ${memory.longitude})")
-//                Image(
-//                    bitmap = bitmap.asImageBitmap(),
-//                    contentDescription = "memory image description",
-//                )
+                Text("Location: ${memory.location}")
+                Text("Date: ${memory.date}")
             }
         }
     }
@@ -41,8 +38,9 @@ fun createSampleMemories(): List<Memory> {
             id = i,
             title = "memory${i}",
             description = "memory${i} sample description",
-            latitude = Math.random() * 10 * i,
-            longitude = Math.random() * 10 * i,
+            location = "Random locaiton",
+            date = "01-09-2022",
+            light = 111.11f,
             imageUri = Uri.fromFile(File("file:///android_asset/strawberries.jpg")).toString()
         )
         list.add(memory)

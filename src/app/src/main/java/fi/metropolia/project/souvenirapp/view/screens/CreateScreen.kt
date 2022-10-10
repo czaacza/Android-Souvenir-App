@@ -1,36 +1,38 @@
 package fi.metropolia.project.souvenirapp.view.screens
 
-import android.Manifest
-import android.annotation.SuppressLint
-import android.app.Activity
-import android.content.pm.PackageManager
 import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import androidx.core.app.ActivityCompat
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.location.Priority
-import com.google.android.gms.tasks.CancellationToken
-import com.google.android.gms.tasks.CancellationTokenSource
+import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import fi.metropolia.project.souvenirapp.R
+import fi.metropolia.project.souvenirapp.view.components.BottomBarScreen
+import fi.metropolia.project.souvenirapp.view.theme.LightBlueTint
 import fi.metropolia.project.souvenirapp.viewmodel.CameraViewModel
 import fi.metropolia.project.souvenirapp.viewmodel.LightSensorViewModel
+import fi.metropolia.project.souvenirapp.viewmodel.LocationViewModel
 import fi.metropolia.project.souvenirapp.viewmodel.MemoryDatabaseViewModel
 import fi.metropolia.project.souvenirapp.view.activities.MainActivity
 
@@ -40,11 +42,28 @@ import fi.metropolia.project.souvenirapp.view.activities.MainActivity
 fun CreateScreen(
     memoryDatabaseViewModel: MemoryDatabaseViewModel,
     cameraViewModel: CameraViewModel,
-    sensorViewModel: LightSensorViewModel
+    sensorViewModel: LightSensorViewModel,
+    locationViewModel: LocationViewModel,
+    navController: NavController
 ) {
+    val locationPoint = locationViewModel.locationPoint.observeAsState()
+
     val txtTitle = remember { mutableStateOf("") }
     val txtDescription = remember { mutableStateOf("") }
-    val txtLocation = remember { mutableStateOf("") }
+    val txtLocation = remember {
+        mutableStateOf(
+            ""
+        )
+    }
+    val txtLight = remember { mutableStateOf("") }
+    val lightState = sensorViewModel.sunData.observeAsState()
+
+    if (locationPoint.value != null) {
+        txtLocation.value = locationViewModel.getAddress(locationPoint.value!!)
+    }
+    if (lightState.value != null) {
+        txtLight.value = lightState.value.toString()
+    }
 
     val cts = CancellationTokenSource()
     var fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(MainActivity())
@@ -60,83 +79,143 @@ fun CreateScreen(
     val isPictureTaken = remember {
         mutableStateOf(false)
     }
+
     val bitmap = cameraViewModel.imageBitmap.observeAsState()
     cameraViewModel.SetLauncher()
-
-    if (!isPictureTaken.value) {
-        cameraViewModel.launch()
-        isPictureTaken.value = true
-    }
 
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .verticalScroll(rememberScrollState())
+            .fillMaxHeight()
     ) {
-        val sunData = sensorViewModel.sunData.observeAsState()
-
-        Column(modifier = Modifier.fillMaxWidth()) {
-            if (bitmap != null && bitmap.value != null) {
-                Image(
-                    bitmap = bitmap.value!!.asImageBitmap(),
-                    contentDescription = "strawberries",
-                    modifier = Modifier
-                        .align(Alignment.CenterHorizontally)
-                        .fillMaxSize(),
-                    contentScale = ContentScale.Crop
+        TopAppBar(
+            modifier = Modifier
+                .fillMaxWidth(),
+            backgroundColor = LightBlueTint
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxSize(),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "NEW MEMORY",
+                    style = MaterialTheme.typography.h1,
+                    color = MaterialTheme.colors.secondary,
                 )
             }
-            Spacer(modifier = Modifier.size(40.dp))
         }
-        Row(modifier = Modifier.fillMaxWidth()) {
-            Column() {
-                Text(stringResource(R.string.title))
-                Spacer(modifier = Modifier.size(55.dp))
-                Text(stringResource(R.string.description))
-                Spacer(modifier = Modifier.size(53.dp))
-                Text(stringResource(R.string.location))
-            }
-            Column() {
-                TextField(txtTitle.value, onValueChange = { txtTitle.value = it })
-                Spacer(modifier = Modifier.size(20.dp))
-                TextField(txtDescription.value, onValueChange = { txtDescription.value = it })
-                Spacer(modifier = Modifier.size(20.dp))
-                if(location != null) {Text(location.result.toString())}
-                else {cts.cancel()}
-            }
-        }
-        Row(modifier = Modifier.fillMaxWidth()) {
-            if (sunData.value == null) {
-                Text(text = "NO LIGHT SENSOR ON YOUR PHONE")
-            } else {
-                Text(text = "LIGHT = ${sunData.value}")
-            }
-        }
-        Row(modifier = Modifier.fillMaxWidth()) {
-            Spacer(modifier = Modifier.size(220.dp))
-            Row() {
-                Button(onClick = { /*TODO*/ }) {
-                    Text(stringResource(R.string.cancel))
-                }
-                Spacer(modifier = Modifier.size(10.dp))
-                Button(onClick = {
-                    if (txtTitle.value.isNotEmpty()
-                        && txtDescription.value.isNotEmpty()
-                        && txtLocation.value.isNotEmpty()
+
+        Column(
+            modifier = Modifier.fillMaxWidth().fillMaxHeight(0.9f),
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.4f)
+                    .padding(10.dp, 10.dp, 10.dp, 0.dp)
+                    .clip(shape = MaterialTheme.shapes.large)
+                    .background(MaterialTheme.colors.surface)
+                    .selectable(true, onClick = {
+                        if (!isPictureTaken.value) {
+                            cameraViewModel.launch()
+                            isPictureTaken.value = true
+                        }
+                    }),
+            ) {
+                if (!isPictureTaken.value) {
+                    Row(
+                        modifier = Modifier.fillMaxSize(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
                     ) {
-                        memoryDatabaseViewModel.createNewMemory(
-                            txtTitle.value,
-                            txtDescription.value,
-                            0.0,
-                            0.0,
-                            "uri"
+                        Text(
+                            text = stringResource(id = R.string.add_picture),
+                            style = MaterialTheme.typography.subtitle2
                         )
                     }
-                }) {
-                    Text(stringResource(R.string.done))
+                } else if (bitmap != null && bitmap.value != null) {
+                    Image(
+                        bitmap = bitmap.value!!.asImageBitmap(),
+                        contentDescription = "Camera picture"
+                    )
                 }
+            }
+//        Spacer(modifier = Modifier.fillMaxHeight(0.05f))
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 10.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                OutlinedTextField(
+                    value = txtTitle.value,
+                    label = {
+                        Text(text = stringResource(id = R.string.title))
+                    },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth(),
+                    onValueChange = { txtTitle.value = it }
+                )
+                OutlinedTextField(
+                    value = txtDescription.value,
+                    label = {
+                        Text(text = stringResource(id = R.string.description))
+                    },
+                    singleLine = false,
+                    modifier = Modifier
+                        .fillMaxHeight(0.3f)
+                        .fillMaxWidth(),
+                    onValueChange = { txtDescription.value = it }
+                )
+                OutlinedTextField(
+                    value = txtLocation.value,
+                    label = {
+                        Text(text = stringResource(id = R.string.location))
+                    },
+                    enabled = false,
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    onValueChange = { txtLocation.value = it }
+                )
+                OutlinedTextField(
+                    value = txtLight.value,
+                    label = {
+                        Text(text = "Light")
+                    },
+                    enabled = false,
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth(),
+                    onValueChange = { txtTitle.value = it }
+                )
 
             }
+
+            ExtendedFloatingActionButton(
+                backgroundColor = MaterialTheme.colors.secondary,
+                icon = {
+                    Icon(
+                        imageVector = Icons.Filled.Done,
+                        tint = MaterialTheme.colors.primary,
+                        contentDescription = "Done icon"
+                    )
+                },
+                text = {
+                    Text(text = "Done", color = MaterialTheme.colors.primary)
+                },
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                onClick = {
+                    memoryDatabaseViewModel.createNewMemory(
+                        txtTitle.value,
+                        txtDescription.value,
+                        txtLocation.value,
+                        txtLight.value.toFloat(),
+                        cameraViewModel.imageAbsolutePath
+                    )
+                    navController.navigate(route = BottomBarScreen.ListScreen.route)
+                })
         }
     }
 }

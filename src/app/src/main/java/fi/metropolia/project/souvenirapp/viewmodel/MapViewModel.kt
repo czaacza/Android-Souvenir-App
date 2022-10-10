@@ -6,26 +6,63 @@ import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.preference.PreferenceManager
 import fi.metropolia.project.souvenirapp.R
+import fi.metropolia.project.souvenirapp.model.data.Memory
+import fi.metropolia.project.souvenirapp.view.activities.MainActivity
+import fi.metropolia.project.souvenirapp.view.screens.getMap
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
+import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapView
+import org.osmdroid.views.overlay.Marker
 
-class MapViewModel(application: Application, val map: MapView) : AndroidViewModel(application) {
-    var isInitialized = false
+class MapViewModel(
+    application: Application,
+    var map: MapView,
+    val locationViewModel: LocationViewModel
+) : AndroidViewModel(application) {
 
-    init{
-        Configuration.getInstance().load(application, PreferenceManager.getDefaultSharedPreferences(application))
+    private val app = application
 
-        if(!isInitialized){
-            map.setTileSource(TileSourceFactory.MAPNIK)
-            map.setMultiTouchControls(true)
-            map.controller.setZoom(9.0)
-            map.controller.setCenter(GeoPoint(100.0,100.0))
-            isInitialized = true
+    init {
+        Configuration.getInstance()
+            .load(app, PreferenceManager.getDefaultSharedPreferences(app))
+        map.setTileSource(TileSourceFactory.MAPNIK)
+    }
+
+    fun initialize() {
+        map.controller.setZoom(9.0)
+        map.setMultiTouchControls(true)
+        map.zoomController.setVisibility(CustomZoomButtonsController.Visibility.NEVER)
+    }
+
+    fun centerMap(centrePoint: GeoPoint) {
+        map.controller.setCenter(centrePoint)
+    }
+
+    fun setMarkers(memories: List<Memory>) {
+        memories.forEach { memory ->
+            val marker = Marker(map)
+            marker.position = locationViewModel.getGeoPoint(memory.location)
+            marker.title = memory.title
+            marker.subDescription =
+                "${memory.description}\n" +
+                        "${memory.date}\n" +
+                        "${memory.location}"
+
+            marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+            map.overlays.add(marker)
         }
     }
 
+    @Composable
+    fun setMap() {
+        map = getMap(app)
+    }
 }
+

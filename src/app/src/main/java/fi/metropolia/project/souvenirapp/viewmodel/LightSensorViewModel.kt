@@ -19,18 +19,10 @@ class LightSensorViewModel(val sensorManager: SensorManager) {
             }
             if (sensorEvent.sensor == sunSensor){
                 sunData.postValue(sensorEvent.values[0])
-                /*if(sunData.value == null) {
-                    sunData.postValue(sensorEvent.values[0])
-                }
-                else if(sunData.value!! - sensorEvent.values[0] ==){
-                    sunData.postValue(sensorEvent.values[0])
-
-                }*/
-
             }
         }
         override fun onAccuracyChanged(sensor: Sensor?, p1: Int) {
-            Log.d("DBG", "Accuracy changed")
+//            Log.d("DBG", "Accuracy changed")
         }
     }
 }
