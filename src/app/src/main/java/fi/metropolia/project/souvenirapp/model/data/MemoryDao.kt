@@ -4,18 +4,18 @@ import androidx.room.*
 
 @Dao
 interface MemoryDao {
-    @Query("SELECT * FROM memory")
-    fun getAll(): List<Memory>
+    @Query("SELECT * FROM MemoryEntity")
+    fun getAll(): List<MemoryEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(memory: Memory): Long
+    suspend fun insert(memory: MemoryEntity): Long
 
     @Delete
-    suspend fun delete(memory: Memory)
+    suspend fun delete(memory: MemoryEntity)
 
     @Update
-    suspend fun update(memory: Memory)
+    suspend fun update(memory: MemoryEntity)
 
-    @Query("DELETE FROM memory")
+    @Query("DELETE FROM MemoryEntity")
     suspend fun clearTable()
 }

@@ -166,6 +166,9 @@ fun CreateScreen(
                         .fillMaxWidth(),
                     onValueChange = { txtLocation.value = it }
                 )
+                if(txtLight.value.isEmpty()){
+                    txtLight.value = "0.0"
+                }
                 OutlinedTextField(
                     value = txtLight.value,
                     label = {
