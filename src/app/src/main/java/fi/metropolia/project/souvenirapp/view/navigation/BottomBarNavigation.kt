@@ -82,7 +82,7 @@ fun BottomBarNavigation(
 //          SET MARKERS
             val memories = memoryDatabaseViewModel.memories.observeAsState()
 
-            if (memories.value != null && !areMarkersSet.value) {
+                if (memories.value != null && !areMarkersSet.value) {
                 mapViewModel.setMarkers(memories.value!!)
                 areMarkersSet.value = true
             }

@@ -37,9 +37,10 @@ class MemoryDatabaseViewModel(application: Application) : AndroidViewModel(appli
         database.memoryDao().insert(memory)
     }
 
-    suspend fun delete(memory: MemoryEntity) {
+    fun delete(memory: Memory) {
         viewModelScope.launch {
             database.memoryDao().delete(memory)
+            loadMemoriesFromDatabase()
         }
     }
 
@@ -90,23 +91,6 @@ class MemoryDatabaseViewModel(application: Application) : AndroidViewModel(appli
 
         return file
     }
-
-//    fun memoryEntitiesToMemories(memoryEntities: List<MemoryEntity>): List<Memory> {
-//        val memories = mutableListOf<Memory>()
-//        memoryEntities.forEach { memoryEntity ->
-//            val memory: MemoryEntity = MemoryEntity(
-//                memoryEntity.id,
-//                memoryEntity.title,
-//                memoryEntity.description,
-//                memoryEntity.location,
-//                memoryEntity.date,
-//                memoryEntity.light,
-//                memoryEntity.imageUri
-//            )
-//            memories.add(memory)
-//        }
-//        return memories
-//    }
 
     suspend fun loadMemoriesFromDatabase() {
         memories.postValue(withContext(Dispatchers.IO) {

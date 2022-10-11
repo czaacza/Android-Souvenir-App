@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.graphics.BitmapFactory
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -51,7 +52,7 @@ fun ListScreen(
         LazyColumn(modifier = Modifier.fillMaxHeight(0.93f)) {
             if (memories != null && memories.value != null) {
                 items(memories.value!!) { memory ->
-                    ShowMemoryCard(memory = memory)
+                    ShowMemoryCard(memory,navController, memoryDatabaseViewModel)
                 }
             }
 
@@ -92,7 +93,7 @@ fun ListScreen(
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
-fun ShowMemoryCard(memory: MemoryEntity) {
+fun ShowMemoryCard(memory: MemoryEntity,navController:NavController,memoryDatabaseViewModel: MemoryDatabaseViewModel) {
     val coroutineScope = rememberCoroutineScope()
     var bitmap = remember { mutableStateOf<ImageBitmap?>(null) }
     coroutineScope.launch(Dispatchers.Default) {
@@ -101,10 +102,21 @@ fun ShowMemoryCard(memory: MemoryEntity) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(20.dp, 20.dp, 20.dp, 0.dp)
-            .clip(RoundedCornerShape(10.dp)),
+            .padding(10.dp, 20.dp, 10.dp, 0.dp)
+            .clickable { }
+            .clip(RoundedCornerShape(5.dp)),
         elevation = 20.dp
     ) {
+        Icon(
+            painter = painterResource(id = R.drawable.ic_trashbin),
+            contentDescription = "delete",
+            Modifier
+                .size(32.dp, 32.dp)
+                .padding(start = 340.dp, top = 5.dp)
+                .clickable {
+                    memoryDatabaseViewModel.delete(memory)
+                }
+        )
         Column(modifier = Modifier.padding(5.dp)) {
             Text(
                 text = memory.title,
@@ -150,38 +162,27 @@ fun ShowMemoryCard(memory: MemoryEntity) {
                         .padding(start = 10.dp)
                 ) {
                     Row(Modifier.fillMaxWidth()) {
-                        Image(
-                            painter = painterResource(id = R.drawable.ic_explore),
-                            contentDescription = null,
+                        Image(painter = painterResource(id = R.drawable.ic_explore), contentDescription = null,
                             Modifier
                                 .size(25.dp, 25.dp)
-                                .padding(top = 2.dp, end = 4.dp)
-                        )
-                        Text(
-                            text = "${memory.location} ",
-                            modifier = Modifier.padding(bottom = 3.dp)
-                        )
+                                .padding(top = 2.dp, end = 4.dp))
+                        Text(text = "${memory.location} ",modifier = Modifier.padding(bottom=3.dp))
                     }
                     Spacer(modifier = Modifier.height(5.dp))
                     Row(Modifier.fillMaxWidth()) {
-                        Image(
-                            painterResource(R.drawable.ic_calendar), contentDescription = null,
+                        Image(painterResource(R.drawable.ic_calendar),contentDescription= null,
                             Modifier
                                 .size(25.dp, 25.dp)
-                                .padding(bottom = 4.dp, end = 3.dp)
-                        )
-                        Text(text = " ${memory.date} ", modifier = Modifier.padding(top = 3.dp))
+                                .padding(bottom = 4.dp, end = 3.dp))
+                        Text(text = " ${memory.date} ",modifier = Modifier.padding(top=3.dp))
                     }
                     Spacer(modifier = Modifier.height(5.dp))
                     Row(Modifier.fillMaxWidth()) {
-                        Image(
-                            painter = painterResource(id = R.drawable.ic_light),
-                            contentDescription = null,
+                        Image(painter = painterResource(id = R.drawable.ic_light), contentDescription = null,
                             Modifier
                                 .size(25.dp, 25.dp)
-                                .padding(bottom = 3.dp)
-                        )
-                        Text(text = " ${memory.light} ", modifier = Modifier.padding(top = 3.dp))
+                                .padding(bottom = 3.dp))
+                        Text(text = " ${memory.light} ",modifier = Modifier.padding(top=3.dp))
                     }
                 }
             }
