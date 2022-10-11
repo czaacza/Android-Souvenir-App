@@ -54,7 +54,6 @@ class MainActivity : ComponentActivity() {
                     sensorViewModel,
                     locationViewModel,
                 )
-                trysensor(sensorManager)
             }
         }
     }

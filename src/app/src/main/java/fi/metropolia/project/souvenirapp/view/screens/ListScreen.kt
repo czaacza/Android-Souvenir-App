@@ -1,7 +1,6 @@
 package fi.metropolia.project.souvenirapp.view.screens
 
 import android.annotation.SuppressLint
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -17,12 +16,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -31,14 +28,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import fi.metropolia.project.souvenirapp.R
-import fi.metropolia.project.souvenirapp.model.createSampleMemories
 import fi.metropolia.project.souvenirapp.model.data.Memory
 import fi.metropolia.project.souvenirapp.view.components.BottomBarScreen
-import fi.metropolia.project.souvenirapp.view.theme.LightBlue1
-import fi.metropolia.project.souvenirapp.view.theme.LightBlueTint
+import fi.metropolia.project.souvenirapp.view.theme.MainColorVariant
 import fi.metropolia.project.souvenirapp.viewmodel.MemoryDatabaseViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 
@@ -49,74 +43,56 @@ fun ListScreen(
 ) {
     val memories = memoryDatabaseViewModel.memories.observeAsState()
 
-//    val memories = remember { mutableStateOf(createSampleMemories()) }
+//    logMemories(memoryDatabaseViewModel)
+
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        TopAppBar(
-            modifier = Modifier
-                .fillMaxWidth(),
-            backgroundColor = LightBlueTint
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxSize(),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = CenterVertically
-            ) {
-                Text(
-                    text = "MY MEMORIES",
-                    style = MaterialTheme.typography.h1,
-                    color = MaterialTheme.colors.secondary,
-                )
-            }
-        }
-
-        Column(modifier = Modifier.fillMaxHeight(0.93f)) {
-            LazyColumn {
-                if (memories != null && memories.value != null) {
-                    items(memories.value!!) { memory ->
-                        ShowMemoryCard(memory = memory)
-                    }
+        LazyColumn(modifier = Modifier.fillMaxHeight(0.93f)) {
+            if (memories != null && memories.value != null) {
+                items(memories.value!!) { memory ->
+                    ShowMemoryCard(memory = memory)
                 }
             }
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 20.dp),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Button(
+            item {
+                Row(
                     modifier = Modifier
-                        .clip(RoundedCornerShape(10.dp)),
-                    colors = ButtonDefaults.buttonColors(backgroundColor = LightBlue1),
-                    onClick = {
-                        navController.navigate(BottomBarScreen.CreateMemoryScreen.route)
-                    }
+                        .fillMaxWidth()
+                        .padding(top = 20.dp),
+                    horizontalArrangement = Arrangement.Center
                 ) {
-                    Icon(
-                        Icons.Outlined.Add,
-                        tint = MaterialTheme.colors.secondary,
-                        contentDescription = "Add icon"
-                    )
-                    Text(
-                        text = "Create new memory",
-                        color = MaterialTheme.colors.secondary,
-                        style = MaterialTheme.typography.body1
-                    )
+                    Button(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(10.dp)),
+                        colors = ButtonDefaults.buttonColors(backgroundColor = MainColorVariant),
+                        onClick = {
+                            navController.navigate(BottomBarScreen.CreateMemoryScreen.route)
+                        }
+                    ) {
+                        Icon(
+                            Icons.Outlined.Add,
+                            tint = MaterialTheme.colors.primary,
+                            contentDescription = "Add icon"
+                        )
+                        Text(
+                            text = "Create new memory",
+                            color = MaterialTheme.colors.primary,
+                            style = MaterialTheme.typography.body1
+                        )
+                    }
                 }
             }
-
         }
 
     }
+
+
 }
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun ShowMemoryCard(memory: Memory) {
-    val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
     var bitmap = remember { mutableStateOf<ImageBitmap?>(null) }
     coroutineScope.launch(Dispatchers.Default) {
