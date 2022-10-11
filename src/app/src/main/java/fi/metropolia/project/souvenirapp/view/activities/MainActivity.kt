@@ -41,7 +41,7 @@ class MainActivity : ComponentActivity() {
         locationViewModel = LocationViewModel(application, this)
 
 
-        //memoryDatabaseViewModel.clear()
+//        memoryDatabaseViewModel.clear()
 
         setContent {
             mapViewModel = MapViewModel(application, getMap(context = this), locationViewModel)
@@ -54,7 +54,6 @@ class MainActivity : ComponentActivity() {
                     sensorViewModel,
                     locationViewModel,
                 )
-                trysensor(sensorManager)
             }
         }
     }

@@ -1,12 +1,9 @@
 package fi.metropolia.project.souvenirapp.view.screens
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
@@ -17,18 +14,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import fi.metropolia.project.souvenirapp.R
 import fi.metropolia.project.souvenirapp.view.components.BottomBarScreen
-import fi.metropolia.project.souvenirapp.view.theme.LightBlueTint
+import fi.metropolia.project.souvenirapp.view.theme.MainColorVariant
 import fi.metropolia.project.souvenirapp.viewmodel.CameraViewModel
 import fi.metropolia.project.souvenirapp.viewmodel.LightSensorViewModel
 import fi.metropolia.project.souvenirapp.viewmodel.LocationViewModel
@@ -74,27 +66,12 @@ fun CreateScreen(
             .fillMaxWidth()
             .fillMaxHeight()
     ) {
-        TopAppBar(
-            modifier = Modifier
-                .fillMaxWidth(),
-            backgroundColor = LightBlueTint
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxSize(),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "NEW MEMORY",
-                    style = MaterialTheme.typography.h1,
-                    color = MaterialTheme.colors.secondary,
-                )
-            }
-        }
+
 
         Column(
-            modifier = Modifier.fillMaxWidth().fillMaxHeight(0.9f),
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(0.9f),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             Box(
@@ -103,7 +80,6 @@ fun CreateScreen(
                     .fillMaxHeight(0.4f)
                     .padding(10.dp, 10.dp, 10.dp, 0.dp)
                     .clip(shape = MaterialTheme.shapes.large)
-                    .background(MaterialTheme.colors.surface)
                     .selectable(true, onClick = {
                         if (!isPictureTaken.value) {
                             cameraViewModel.launch()
@@ -113,7 +89,9 @@ fun CreateScreen(
             ) {
                 if (!isPictureTaken.value) {
                     Row(
-                        modifier = Modifier.fillMaxSize(),
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(MaterialTheme.colors.surface),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.Center
                     ) {
@@ -125,7 +103,8 @@ fun CreateScreen(
                 } else if (bitmap != null && bitmap.value != null) {
                     Image(
                         bitmap = bitmap.value!!.asImageBitmap(),
-                        contentDescription = "Camera picture"
+                        contentDescription = "Camera picture",
+                        modifier = Modifier.fillMaxSize()
                     )
                 }
             }
@@ -166,6 +145,9 @@ fun CreateScreen(
                         .fillMaxWidth(),
                     onValueChange = { txtLocation.value = it }
                 )
+                if (txtLight.value.isEmpty()) {
+                    txtLight.value = "0.0"
+                }
                 OutlinedTextField(
                     value = txtLight.value,
                     label = {
@@ -180,7 +162,7 @@ fun CreateScreen(
             }
 
             ExtendedFloatingActionButton(
-                backgroundColor = MaterialTheme.colors.secondary,
+                backgroundColor = MainColorVariant,
                 icon = {
                     Icon(
                         imageVector = Icons.Filled.Done,
@@ -198,7 +180,7 @@ fun CreateScreen(
                         txtDescription.value,
                         txtLocation.value,
                         txtLight.value.toFloat(),
-                        cameraViewModel.imageAbsolutePath
+                        bitmap.value!!,
                     )
                     navController.navigate(route = BottomBarScreen.ListScreen.route)
                 })

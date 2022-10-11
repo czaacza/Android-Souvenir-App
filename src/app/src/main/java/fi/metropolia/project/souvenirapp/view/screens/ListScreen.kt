@@ -1,27 +1,26 @@
 package fi.metropolia.project.souvenirapp.view.screens
 
-import android.content.Context
-import android.graphics.Bitmap
+import android.annotation.SuppressLint
 import android.graphics.BitmapFactory
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CutCornerShape
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
-import androidx.compose.material.icons.outlined.Face
-import androidx.compose.material.icons.outlined.LocationOn
-import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -29,16 +28,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import coil.size.Size
 import fi.metropolia.project.souvenirapp.R
-import fi.metropolia.project.souvenirapp.model.data.Memory
+import fi.metropolia.project.souvenirapp.model.data.MemoryEntity
 import fi.metropolia.project.souvenirapp.view.components.BottomBarScreen
-import fi.metropolia.project.souvenirapp.view.theme.LightBlue1
-import fi.metropolia.project.souvenirapp.view.theme.LightBlueTint
+import fi.metropolia.project.souvenirapp.view.theme.MainColorVariant
 import fi.metropolia.project.souvenirapp.viewmodel.MemoryDatabaseViewModel
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.io.IOException
 
 
 @Composable
@@ -48,68 +44,61 @@ fun ListScreen(
 ) {
     val memories = memoryDatabaseViewModel.memories.observeAsState()
 
+//    logMemories(memoryDatabaseViewModel)
+
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        TopAppBar(
-            modifier = Modifier
-                .fillMaxWidth(),
-            backgroundColor = LightBlueTint
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxSize(),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = CenterVertically
-            ) {
-                Text(
-                    text = "MY MEMORIES",
-                    style = MaterialTheme.typography.h1,
-                    color = MaterialTheme.colors.secondary,
-                )
-            }
-        }
-        Column(Modifier.verticalScroll(rememberScrollState())) {
+        LazyColumn(modifier = Modifier.fillMaxHeight(0.93f)) {
             if (memories != null && memories.value != null) {
-                memories.value!!.forEach { memory ->
+                items(memories.value!!) { memory ->
                     ShowMemoryCard(memory,navController, memoryDatabaseViewModel)
                 }
             }
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 20.dp),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Button(
+
+            item {
+                Row(
                     modifier = Modifier
-                        .clip(RoundedCornerShape(10.dp)),
-                    colors = ButtonDefaults.buttonColors(backgroundColor = LightBlue1),
-                    onClick = {
-                        navController.navigate(BottomBarScreen.CreateMemoryScreen.route)
-                    }
+                        .fillMaxWidth()
+                        .padding(top = 20.dp),
+                    horizontalArrangement = Arrangement.Center
                 ) {
-                    Icon(
-                        Icons.Outlined.Add,
-                        tint = MaterialTheme.colors.secondary,
-                        contentDescription = "Add icon"
-                    )
-                    Text(
-                        text = "Create new memory",
-                        color = MaterialTheme.colors.secondary,
-                        style = MaterialTheme.typography.body1
-                    )
+                    Button(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(10.dp)),
+                        colors = ButtonDefaults.buttonColors(backgroundColor = MainColorVariant),
+                        onClick = {
+                            navController.navigate(BottomBarScreen.CreateMemoryScreen.route)
+                        }
+                    ) {
+                        Icon(
+                            Icons.Outlined.Add,
+                            tint = MaterialTheme.colors.primary,
+                            contentDescription = "Add icon"
+                        )
+                        Text(
+                            text = "Create new memory",
+                            color = MaterialTheme.colors.primary,
+                            style = MaterialTheme.typography.body1
+                        )
+                    }
                 }
             }
-
         }
 
     }
+
+
 }
 
+@SuppressLint("CoroutineCreationDuringComposition")
 @Composable
-fun ShowMemoryCard(memory: Memory,navController:NavController,memoryDatabaseViewModel: MemoryDatabaseViewModel) {
-    val context = LocalContext.current
+fun ShowMemoryCard(memory: MemoryEntity,navController:NavController,memoryDatabaseViewModel: MemoryDatabaseViewModel) {
+    val coroutineScope = rememberCoroutineScope()
+    var bitmap = remember { mutableStateOf<ImageBitmap?>(null) }
+    coroutineScope.launch(Dispatchers.Default) {
+        bitmap.value = BitmapFactory.decodeFile(memory.imageUri).asImageBitmap()
+    }
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -146,20 +135,32 @@ fun ShowMemoryCard(memory: Memory,navController:NavController,memoryDatabaseView
                     .padding(10.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                    Image(
-                        bitmap = BitmapFactory.decodeFile(memory.imageUri).asImageBitmap(),
-                        contentDescription = "Image",
-                        modifier = Modifier
-                            .fillMaxWidth(0.4F)
-                            .clip(RoundedCornerShape(10.dp))
-                    )
-
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth(0.4F)
+                        .clip(RoundedCornerShape(10.dp))
+                )
+                {
+                    if (bitmap.value != null) {
+                        Image(
+                            bitmap = bitmap.value!!,
+                            contentDescription = "memory image",
+                        )
+                    } else {
+                        Row(
+                            modifier = Modifier.fillMaxSize(),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            CircularProgressIndicator()
+                        }
+                    }
+                }
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(start = 10.dp)
                 ) {
-                    //Icon(painter = painterResource(id = R.drawable.c))
                     Row(Modifier.fillMaxWidth()) {
                         Image(painter = painterResource(id = R.drawable.ic_explore), contentDescription = null,
                             Modifier

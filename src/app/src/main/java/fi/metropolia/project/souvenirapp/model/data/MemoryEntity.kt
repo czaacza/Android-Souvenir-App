@@ -7,7 +7,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class Memory(
+data class MemoryEntity(
     @PrimaryKey(autoGenerate = true) val id: Int,
     @ColumnInfo(name = "title") var title: String,
     @ColumnInfo(name = "description") val description: String,
