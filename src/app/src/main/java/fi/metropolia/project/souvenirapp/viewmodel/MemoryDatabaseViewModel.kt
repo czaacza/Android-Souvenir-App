@@ -31,9 +31,10 @@ class MemoryDatabaseViewModel(application: Application) : AndroidViewModel(appli
         database.memoryDao().insert(memory)
     }
 
-    suspend fun delete(memory: Memory) {
+    fun delete(memory: Memory) {
         viewModelScope.launch {
             database.memoryDao().delete(memory)
+            loadMemoriesFromDatabase()
         }
     }
 

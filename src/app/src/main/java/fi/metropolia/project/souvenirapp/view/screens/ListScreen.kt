@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -71,7 +72,7 @@ fun ListScreen(
         Column(Modifier.verticalScroll(rememberScrollState())) {
             if (memories != null && memories.value != null) {
                 memories.value!!.forEach { memory ->
-                    ShowMemoryCard(memory)
+                    ShowMemoryCard(memory,navController, memoryDatabaseViewModel)
                 }
             }
             Row(
@@ -107,15 +108,26 @@ fun ListScreen(
 }
 
 @Composable
-fun ShowMemoryCard(memory: Memory) {
+fun ShowMemoryCard(memory: Memory,navController:NavController,memoryDatabaseViewModel: MemoryDatabaseViewModel) {
     val context = LocalContext.current
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(20.dp, 20.dp, 20.dp, 0.dp)
-            .clip(RoundedCornerShape(10.dp)),
+            .padding(10.dp, 20.dp, 10.dp, 0.dp)
+            .clickable { }
+            .clip(RoundedCornerShape(5.dp)),
         elevation = 20.dp
     ) {
+        Icon(
+            painter = painterResource(id = R.drawable.ic_trashbin),
+            contentDescription = "delete",
+            Modifier
+                .size(32.dp, 32.dp)
+                .padding(start = 340.dp, top = 5.dp)
+                .clickable {
+                    memoryDatabaseViewModel.delete(memory)
+                }
+        )
         Column(modifier = Modifier.padding(5.dp)) {
             Text(
                 text = memory.title,
@@ -129,7 +141,6 @@ fun ShowMemoryCard(memory: Memory) {
                 )
             )
             Row(
-
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(10.dp),
@@ -137,7 +148,7 @@ fun ShowMemoryCard(memory: Memory) {
             ) {
                     Image(
                         bitmap = BitmapFactory.decodeFile(memory.imageUri).asImageBitmap(),
-                        contentDescription = "strawberries",
+                        contentDescription = "Image",
                         modifier = Modifier
                             .fillMaxWidth(0.4F)
                             .clip(RoundedCornerShape(10.dp))
@@ -150,23 +161,26 @@ fun ShowMemoryCard(memory: Memory) {
                 ) {
                     //Icon(painter = painterResource(id = R.drawable.c))
                     Row(Modifier.fillMaxWidth()) {
-                        Image(painter = painterResource(id = R.drawable.ic_explore), contentDescription = null,Modifier
-                            .size(25.dp,25.dp)
-                            .padding(top=2.dp,end=4.dp))
+                        Image(painter = painterResource(id = R.drawable.ic_explore), contentDescription = null,
+                            Modifier
+                                .size(25.dp, 25.dp)
+                                .padding(top = 2.dp, end = 4.dp))
                         Text(text = "${memory.location} ",modifier = Modifier.padding(bottom=3.dp))
                     }
                     Spacer(modifier = Modifier.height(5.dp))
                     Row(Modifier.fillMaxWidth()) {
-                        Image(painterResource(R.drawable.ic_calendar),contentDescription= null,Modifier
-                            .size(25.dp,25.dp)
-                            .padding(bottom = 4.dp, end = 3.dp))
+                        Image(painterResource(R.drawable.ic_calendar),contentDescription= null,
+                            Modifier
+                                .size(25.dp, 25.dp)
+                                .padding(bottom = 4.dp, end = 3.dp))
                         Text(text = " ${memory.date} ",modifier = Modifier.padding(top=3.dp))
                     }
                     Spacer(modifier = Modifier.height(5.dp))
                     Row(Modifier.fillMaxWidth()) {
-                        Image(painter = painterResource(id = R.drawable.ic_light), contentDescription = null,Modifier
-                            .size(25.dp,25.dp)
-                            .padding(bottom = 3.dp))
+                        Image(painter = painterResource(id = R.drawable.ic_light), contentDescription = null,
+                            Modifier
+                                .size(25.dp, 25.dp)
+                                .padding(bottom = 3.dp))
                         Text(text = " ${memory.light} ",modifier = Modifier.padding(top=3.dp))
                     }
                 }
