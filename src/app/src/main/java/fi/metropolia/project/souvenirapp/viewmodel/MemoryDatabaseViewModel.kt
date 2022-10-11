@@ -1,13 +1,10 @@
 package fi.metropolia.project.souvenirapp.viewmodel
 
-import android.R.attr
 import android.app.Application
 import android.graphics.Bitmap
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import fi.metropolia.project.souvenirapp.model.data.Memory
 import fi.metropolia.project.souvenirapp.model.data.MemoryDatabase
 import fi.metropolia.project.souvenirapp.model.data.MemoryEntity
 import kotlinx.coroutines.Dispatchers
@@ -24,7 +21,7 @@ import java.util.*
 class MemoryDatabaseViewModel(application: Application) : AndroidViewModel(application) {
     val app = application
     val database = MemoryDatabase.get(application)
-    val memories = MutableLiveData<List<Memory>>()
+    val memories = MutableLiveData<List<MemoryEntity>>()
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
@@ -94,27 +91,26 @@ class MemoryDatabaseViewModel(application: Application) : AndroidViewModel(appli
         return file
     }
 
-    fun memoryEntitiesToMemories(memoryEntities: List<MemoryEntity>): List<Memory> {
-        val memories = mutableListOf<Memory>()
-        memoryEntities.forEach { memoryEntity ->
-            val memory: Memory = Memory(
-                memoryEntity.id,
-                memoryEntity.title,
-                memoryEntity.description,
-                memoryEntity.location,
-                memoryEntity.date,
-                memoryEntity.light,
-                memoryEntity.imageUri
-            )
-            memories.add(memory)
-        }
-        return memories
-    }
+//    fun memoryEntitiesToMemories(memoryEntities: List<MemoryEntity>): List<Memory> {
+//        val memories = mutableListOf<Memory>()
+//        memoryEntities.forEach { memoryEntity ->
+//            val memory: MemoryEntity = MemoryEntity(
+//                memoryEntity.id,
+//                memoryEntity.title,
+//                memoryEntity.description,
+//                memoryEntity.location,
+//                memoryEntity.date,
+//                memoryEntity.light,
+//                memoryEntity.imageUri
+//            )
+//            memories.add(memory)
+//        }
+//        return memories
+//    }
 
     suspend fun loadMemoriesFromDatabase() {
-        Log.d("DBG", "loading memories")
         memories.postValue(withContext(Dispatchers.IO) {
-            memoryEntitiesToMemories(getAll())
+            getAll()
         }!!)
     }
 

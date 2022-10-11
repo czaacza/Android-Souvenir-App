@@ -5,12 +5,12 @@ import android.net.Uri
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import fi.metropolia.project.souvenirapp.model.data.Memory
+import fi.metropolia.project.souvenirapp.model.data.MemoryEntity
 import java.io.File
 
 //Sample function to show list of Memories
 @Composable
-fun ShowMemories(memoriesList: List<Memory>, context: Context) {
+fun ShowMemories(memoriesList: List<MemoryEntity>, context: Context) {
     Column() {
         memoriesList.forEach { memory ->
             Column() {
@@ -24,10 +24,10 @@ fun ShowMemories(memoriesList: List<Memory>, context: Context) {
 }
 
 // A function used to create sample list of memories
-fun createSampleMemories(): List<Memory> {
-    val list = mutableListOf<Memory>()
+fun createSampleMemories(): List<MemoryEntity> {
+    val list = mutableListOf<MemoryEntity>()
     for (i in 1..10) {
-        val memory = Memory(
+        val memory = MemoryEntity(
             id = i,
             title = "memory${i}",
             description = "memory${i} sample description",

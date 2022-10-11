@@ -1,14 +1,11 @@
 package fi.metropolia.project.souvenirapp.viewmodel
 
 import android.app.Application
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
-import androidx.core.view.isGone
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.preference.PreferenceManager
-import fi.metropolia.project.souvenirapp.model.data.Memory
-import fi.metropolia.project.souvenirapp.view.activities.MainActivity
+import fi.metropolia.project.souvenirapp.model.data.MemoryEntity
 import fi.metropolia.project.souvenirapp.view.screens.getMap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -43,7 +40,7 @@ class MapViewModel(
         map.controller.setCenter(centrePoint)
     }
 
-    fun setMarkers(memories: List<Memory>) {
+    fun setMarkers(memories: List<MemoryEntity>) {
         viewModelScope.launch(Dispatchers.IO) {
             memories.forEach { memory ->
                 val marker = Marker(map)

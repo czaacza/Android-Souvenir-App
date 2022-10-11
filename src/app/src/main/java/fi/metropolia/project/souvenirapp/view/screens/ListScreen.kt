@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import fi.metropolia.project.souvenirapp.R
-import fi.metropolia.project.souvenirapp.model.data.Memory
+import fi.metropolia.project.souvenirapp.model.data.MemoryEntity
 import fi.metropolia.project.souvenirapp.view.components.BottomBarScreen
 import fi.metropolia.project.souvenirapp.view.theme.MainColorVariant
 import fi.metropolia.project.souvenirapp.viewmodel.MemoryDatabaseViewModel
@@ -92,7 +92,7 @@ fun ListScreen(
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
-fun ShowMemoryCard(memory: Memory) {
+fun ShowMemoryCard(memory: MemoryEntity) {
     val coroutineScope = rememberCoroutineScope()
     var bitmap = remember { mutableStateOf<ImageBitmap?>(null) }
     coroutineScope.launch(Dispatchers.Default) {
