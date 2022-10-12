@@ -38,7 +38,7 @@ fun BottomBar(navController: NavHostController) {
                 icon = {
                     Icon(
                         painter = painterResource(id = screen.painter),
-                        tint = MaterialTheme.colors.secondary,
+                        tint = MaterialTheme.colors.primary,
                         contentDescription = "Icon",
                         modifier = Modifier.size(25.dp,25.dp)
                     )

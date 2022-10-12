@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.graphics.BitmapFactory
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -29,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import fi.metropolia.project.souvenirapp.R
-import fi.metropolia.project.souvenirapp.model.data.MemoryEntity
+import fi.metropolia.project.souvenirapp.model.data.Memory
 import fi.metropolia.project.souvenirapp.view.components.BottomBarScreen
 import fi.metropolia.project.souvenirapp.view.theme.MainColorVariant
 import fi.metropolia.project.souvenirapp.viewmodel.MemoryDatabaseViewModel
@@ -93,7 +92,7 @@ fun ListScreen(
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
-fun ShowMemoryCard(memory: MemoryEntity,navController:NavController,memoryDatabaseViewModel: MemoryDatabaseViewModel) {
+fun ShowMemoryCard(memory: Memory, navController:NavController, memoryDatabaseViewModel: MemoryDatabaseViewModel) {
     val coroutineScope = rememberCoroutineScope()
     var bitmap = remember { mutableStateOf<ImageBitmap?>(null) }
     coroutineScope.launch(Dispatchers.Default) {
@@ -103,7 +102,9 @@ fun ShowMemoryCard(memory: MemoryEntity,navController:NavController,memoryDataba
         modifier = Modifier
             .fillMaxWidth()
             .padding(10.dp, 20.dp, 10.dp, 0.dp)
-            .clickable { }
+            .clickable {
+                navController.navigate("details")
+            }
             .clip(RoundedCornerShape(5.dp)),
         elevation = 20.dp
     ) {

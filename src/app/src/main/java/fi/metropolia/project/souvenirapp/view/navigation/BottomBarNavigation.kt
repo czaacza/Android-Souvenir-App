@@ -15,6 +15,7 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import fi.metropolia.project.souvenirapp.view.components.BottomBarScreen
 import fi.metropolia.project.souvenirapp.view.screens.CreateScreen
+import fi.metropolia.project.souvenirapp.view.screens.DetailsScreen
 import fi.metropolia.project.souvenirapp.view.screens.ListScreen
 import fi.metropolia.project.souvenirapp.view.screens.MapScreen
 import fi.metropolia.project.souvenirapp.viewmodel.*
@@ -97,9 +98,14 @@ fun BottomBarNavigation(
                         initialOffsetX = { fullWidth -> 2 * fullWidth },
                         animationSpec = tween(SLIDE_DURATION_MS)
                     )
-                } else {
+                } else if(lastDestinationRoute.value == BottomBarScreen.CreateMemoryScreen.route){
                     slideInHorizontally(
                         initialOffsetX = { fullWidth -> -2 * fullWidth },
+                        animationSpec = tween(SLIDE_DURATION_MS)
+                    )
+                } else {
+                    slideInVertically (
+                        initialOffsetY = { fullHeight -> -2 * fullHeight },
                         animationSpec = tween(SLIDE_DURATION_MS)
                     )
                 }
@@ -110,10 +116,15 @@ fun BottomBarNavigation(
                         targetOffsetX = { fullWidth -> 2 * fullWidth },
                         animationSpec = tween(SLIDE_DURATION_MS)
                     )
-                } else {
+                } else if(currentDestination?.route == BottomBarScreen.CreateMemoryScreen.route) {
                     slideOutHorizontally(
                         targetOffsetX = { fullWidth -> -2 * fullWidth },
                         animationSpec = tween(SLIDE_DURATION_MS)
+                    )
+                } else {
+                    slideOutVertically (
+                        targetOffsetY = { fullHeight -> 20},
+                        animationSpec = tween(300)
                     )
                 }
             },
@@ -140,6 +151,11 @@ fun BottomBarNavigation(
                 locationViewModel,
                 navController
             )
+        }
+        composable(
+            route = "details"
+        ){
+            DetailsScreen()
         }
     }
 }

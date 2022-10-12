@@ -6,7 +6,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import fi.metropolia.project.souvenirapp.model.data.MemoryDatabase
-import fi.metropolia.project.souvenirapp.model.data.MemoryEntity
+import fi.metropolia.project.souvenirapp.model.data.Memory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -21,7 +21,7 @@ import java.util.*
 class MemoryDatabaseViewModel(application: Application) : AndroidViewModel(application) {
     val app = application
     val database = MemoryDatabase.get(application)
-    val memories = MutableLiveData<List<MemoryEntity>>()
+    val memories = MutableLiveData<List<Memory>>()
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
@@ -29,11 +29,11 @@ class MemoryDatabaseViewModel(application: Application) : AndroidViewModel(appli
         }
     }
 
-    fun getAll(): List<MemoryEntity> {
+    fun getAll(): List<Memory> {
         return database.memoryDao().getAll()
     }
 
-    suspend fun insert(memory: MemoryEntity) {
+    suspend fun insert(memory: Memory) {
         database.memoryDao().insert(memory)
     }
 
@@ -44,7 +44,7 @@ class MemoryDatabaseViewModel(application: Application) : AndroidViewModel(appli
         }
     }
 
-    suspend fun update(memory: MemoryEntity) {
+    suspend fun update(memory: Memory) {
         viewModelScope.launch {
             database.memoryDao().update(memory)
         }
@@ -70,9 +70,9 @@ class MemoryDatabaseViewModel(application: Application) : AndroidViewModel(appli
             val currentDate: String =
                 SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date())
 
-            val newMemory: MemoryEntity
+            val newMemory: Memory
             newMemory =
-                MemoryEntity(0, title, description, location, currentDate, light, fileAbsolutePath)
+                Memory(0, title, description, location, currentDate, light, fileAbsolutePath)
 
             insert(newMemory)
 

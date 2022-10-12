@@ -47,6 +47,9 @@ fun MainScreen(
                 BottomBarScreen.CreateMemoryScreen.route -> {
                     topAppText = "NEW MEMORY"
                 }
+                "details" -> {
+                    topAppText = "MEMORY DETAILS"
+                }
             }
 
             TopAppBar(

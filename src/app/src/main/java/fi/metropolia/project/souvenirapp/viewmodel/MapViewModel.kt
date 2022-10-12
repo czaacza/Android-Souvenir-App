@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.preference.PreferenceManager
-import fi.metropolia.project.souvenirapp.model.data.MemoryEntity
+import fi.metropolia.project.souvenirapp.model.data.Memory
 import fi.metropolia.project.souvenirapp.view.screens.getMap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -40,7 +40,7 @@ class MapViewModel(
         map.controller.setCenter(centrePoint)
     }
 
-    fun setMarkers(memories: List<MemoryEntity>) {
+    fun setMarkers(memories: List<Memory>) {
         viewModelScope.launch(Dispatchers.IO) {
             memories.forEach { memory ->
                 val marker = Marker(map)
