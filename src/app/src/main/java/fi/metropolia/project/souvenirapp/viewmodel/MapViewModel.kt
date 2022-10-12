@@ -1,6 +1,7 @@
 package fi.metropolia.project.souvenirapp.viewmodel
 
 import android.app.Application
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -43,6 +44,9 @@ class MapViewModel(
     fun setMarkers(memories: List<Memory>) {
         viewModelScope.launch(Dispatchers.IO) {
             memories.forEach { memory ->
+                if(memory.location == ""){
+                    return@forEach
+                }
                 val marker = Marker(map)
                 marker.position = locationViewModel.getGeoPoint(memory.location)
                 marker.title = memory.title

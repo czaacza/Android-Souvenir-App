@@ -70,14 +70,12 @@ class MemoryDatabaseViewModel(application: Application) : AndroidViewModel(appli
             val currentDate: String =
                 SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date())
 
-            val newMemory: Memory
-            newMemory =
+            val newMemory =
                 Memory(0, title, description, location, currentDate, light, fileAbsolutePath)
 
             insert(newMemory)
 
             loadMemoriesFromDatabase()
-
         }
     }
 

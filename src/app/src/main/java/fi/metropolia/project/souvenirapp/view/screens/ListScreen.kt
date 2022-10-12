@@ -1,6 +1,7 @@
 package fi.metropolia.project.souvenirapp.view.screens
 
 import android.annotation.SuppressLint
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -51,7 +52,7 @@ fun ListScreen(
         LazyColumn(modifier = Modifier.fillMaxHeight(0.93f)) {
             if (memories != null && memories.value != null) {
                 items(memories.value!!) { memory ->
-                    ShowMemoryCard(memory,navController, memoryDatabaseViewModel)
+                    ShowMemoryCard(memory, navController, memoryDatabaseViewModel)
                 }
             }
 
@@ -63,8 +64,8 @@ fun ListScreen(
                     horizontalArrangement = Arrangement.Center
                 ) {
                     Button(
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(10.dp)),
+                        modifier = Modifier,
+                        shape = MaterialTheme.shapes.large,
                         colors = ButtonDefaults.buttonColors(backgroundColor = MainColorVariant),
                         onClick = {
                             navController.navigate(BottomBarScreen.CreateMemoryScreen.route)
@@ -92,11 +93,17 @@ fun ListScreen(
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
-fun ShowMemoryCard(memory: Memory, navController:NavController, memoryDatabaseViewModel: MemoryDatabaseViewModel) {
+fun ShowMemoryCard(
+    memory: Memory,
+    navController: NavController,
+    memoryDatabaseViewModel: MemoryDatabaseViewModel
+) {
     val coroutineScope = rememberCoroutineScope()
-    var bitmap = remember { mutableStateOf<ImageBitmap?>(null) }
-    coroutineScope.launch(Dispatchers.Default) {
-        bitmap.value = BitmapFactory.decodeFile(memory.imageUri).asImageBitmap()
+    var bitmap = remember { mutableStateOf<Bitmap?>(null) }
+    if (memory.imageUri != null) {
+        coroutineScope.launch(Dispatchers.Default) {
+            bitmap.value = BitmapFactory.decodeFile(memory.imageUri)
+        }
     }
     Card(
         modifier = Modifier
@@ -104,9 +111,8 @@ fun ShowMemoryCard(memory: Memory, navController:NavController, memoryDatabaseVi
             .padding(10.dp, 20.dp, 10.dp, 0.dp)
             .clickable {
                 navController.navigate("details")
-            }
-            .clip(RoundedCornerShape(5.dp)),
-        elevation = 20.dp
+            },
+        shape = MaterialTheme.shapes.small,
     ) {
         Icon(
             painter = painterResource(id = R.drawable.ic_trashbin),
@@ -144,7 +150,7 @@ fun ShowMemoryCard(memory: Memory, navController:NavController, memoryDatabaseVi
                 {
                     if (bitmap.value != null) {
                         Image(
-                            bitmap = bitmap.value!!,
+                            bitmap = bitmap.value!!.asImageBitmap(),
                             contentDescription = "memory image",
                         )
                     } else {
@@ -163,27 +169,38 @@ fun ShowMemoryCard(memory: Memory, navController:NavController, memoryDatabaseVi
                         .padding(start = 10.dp)
                 ) {
                     Row(Modifier.fillMaxWidth()) {
-                        Image(painter = painterResource(id = R.drawable.ic_explore), contentDescription = null,
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_explore),
+                            contentDescription = null,
                             Modifier
                                 .size(25.dp, 25.dp)
-                                .padding(top = 2.dp, end = 4.dp))
-                        Text(text = "${memory.location} ",modifier = Modifier.padding(bottom=3.dp))
+                                .padding(top = 2.dp, end = 4.dp)
+                        )
+                        Text(
+                            text = "${memory.location} ",
+                            modifier = Modifier.padding(bottom = 3.dp)
+                        )
                     }
                     Spacer(modifier = Modifier.height(5.dp))
                     Row(Modifier.fillMaxWidth()) {
-                        Image(painterResource(R.drawable.ic_calendar),contentDescription= null,
+                        Image(
+                            painterResource(R.drawable.ic_calendar), contentDescription = null,
                             Modifier
                                 .size(25.dp, 25.dp)
-                                .padding(bottom = 4.dp, end = 3.dp))
-                        Text(text = " ${memory.date} ",modifier = Modifier.padding(top=3.dp))
+                                .padding(bottom = 4.dp, end = 3.dp)
+                        )
+                        Text(text = " ${memory.date} ", modifier = Modifier.padding(top = 3.dp))
                     }
                     Spacer(modifier = Modifier.height(5.dp))
                     Row(Modifier.fillMaxWidth()) {
-                        Image(painter = painterResource(id = R.drawable.ic_light), contentDescription = null,
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_light),
+                            contentDescription = null,
                             Modifier
                                 .size(25.dp, 25.dp)
-                                .padding(bottom = 3.dp))
-                        Text(text = " ${memory.light} ",modifier = Modifier.padding(top=3.dp))
+                                .padding(bottom = 3.dp)
+                        )
+                        Text(text = " ${memory.light} ", modifier = Modifier.padding(top = 3.dp))
                     }
                 }
             }

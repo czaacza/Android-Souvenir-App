@@ -2,6 +2,7 @@ package fi.metropolia.project.souvenirapp.view.navigation
 
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
@@ -9,6 +10,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.google.accompanist.navigation.animation.AnimatedNavHost
@@ -34,6 +36,7 @@ fun BottomBarNavigation(
     locationViewModel: LocationViewModel,
     navigationViewModel: NavigationViewModel
 ) {
+    val context = LocalContext.current
     val currentStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = currentStackEntry?.destination
     val lastDestinationRoute = navigationViewModel.lastDestinationRoute.observeAsState()
@@ -83,7 +86,7 @@ fun BottomBarNavigation(
 //          SET MARKERS
             val memories = memoryDatabaseViewModel.memories.observeAsState()
 
-                if (memories.value != null && !areMarkersSet.value) {
+            if (memories.value != null && !areMarkersSet.value) {
                 mapViewModel.setMarkers(memories.value!!)
                 areMarkersSet.value = true
             }
@@ -98,13 +101,13 @@ fun BottomBarNavigation(
                         initialOffsetX = { fullWidth -> 2 * fullWidth },
                         animationSpec = tween(SLIDE_DURATION_MS)
                     )
-                } else if(lastDestinationRoute.value == BottomBarScreen.CreateMemoryScreen.route){
+                } else if (lastDestinationRoute.value == BottomBarScreen.CreateMemoryScreen.route) {
                     slideInHorizontally(
                         initialOffsetX = { fullWidth -> -2 * fullWidth },
                         animationSpec = tween(SLIDE_DURATION_MS)
                     )
                 } else {
-                    slideInVertically (
+                    slideInVertically(
                         initialOffsetY = { fullHeight -> -2 * fullHeight },
                         animationSpec = tween(SLIDE_DURATION_MS)
                     )
@@ -116,16 +119,17 @@ fun BottomBarNavigation(
                         targetOffsetX = { fullWidth -> 2 * fullWidth },
                         animationSpec = tween(SLIDE_DURATION_MS)
                     )
-                } else if(currentDestination?.route == BottomBarScreen.CreateMemoryScreen.route) {
+                } else if (currentDestination?.route == BottomBarScreen.CreateMemoryScreen.route) {
                     slideOutHorizontally(
                         targetOffsetX = { fullWidth -> -2 * fullWidth },
                         animationSpec = tween(SLIDE_DURATION_MS)
                     )
                 } else {
-                    slideOutVertically (
-                        targetOffsetY = { fullHeight -> 20},
-                        animationSpec = tween(300)
-                    )
+//                    slideOutVertically(
+//                        targetOffsetY = { fullHeight -> 20 },
+//                        animationSpec = tween(300)
+//                    )
+                    fadeOut(animationSpec = tween(FADE_DURATION_MS))
                 }
             },
         ) {
@@ -153,8 +157,14 @@ fun BottomBarNavigation(
             )
         }
         composable(
-            route = "details"
-        ){
+            route = "details",
+            enterTransition = {
+                slideInVertically(
+                    initialOffsetY = { fullHeight -> 2 * fullHeight },
+                    animationSpec = tween(SLIDE_DURATION_MS)
+                )
+            }
+        ) {
             DetailsScreen()
         }
     }

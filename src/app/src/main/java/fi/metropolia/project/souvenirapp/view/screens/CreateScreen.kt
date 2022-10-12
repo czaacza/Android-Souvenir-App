@@ -1,5 +1,7 @@
 package fi.metropolia.project.souvenirapp.view.screens
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -15,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -36,6 +39,7 @@ fun CreateScreen(
     navController: NavController
 ) {
     val locationPoint = locationViewModel.locationPoint.observeAsState()
+    val context = LocalContext.current
 
     val txtTitle = remember { mutableStateOf("") }
     val txtDescription = remember { mutableStateOf("") }
@@ -50,6 +54,7 @@ fun CreateScreen(
     if (locationPoint.value != null) {
         txtLocation.value = locationViewModel.getAddress(locationPoint.value!!)
     }
+
     if (lightState.value != null) {
         txtLight.value = lightState.value.toString()
     }
@@ -79,7 +84,7 @@ fun CreateScreen(
                     .fillMaxWidth()
                     .fillMaxHeight(0.4f)
                     .padding(10.dp, 10.dp, 10.dp, 0.dp)
-                    .clip(shape = MaterialTheme.shapes.large)
+                    .clip(shape = MaterialTheme.shapes.medium)
                     .selectable(true, onClick = {
                         if (!isPictureTaken.value) {
                             cameraViewModel.launch()
@@ -158,7 +163,6 @@ fun CreateScreen(
                     modifier = Modifier.fillMaxWidth(),
                     onValueChange = { txtTitle.value = it }
                 )
-
             }
 
             ExtendedFloatingActionButton(
@@ -175,14 +179,18 @@ fun CreateScreen(
                 },
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 onClick = {
-                    memoryDatabaseViewModel.createNewMemory(
-                        txtTitle.value,
-                        txtDescription.value,
-                        txtLocation.value,
-                        txtLight.value.toFloat(),
-                        bitmap.value!!,
-                    )
-                    navController.navigate(route = BottomBarScreen.ListScreen.route)
+                    if(txtTitle.value != "" && txtDescription.value != "" && bitmap.value != null) {
+                        memoryDatabaseViewModel.createNewMemory(
+                            txtTitle.value,
+                            txtDescription.value,
+                            txtLocation.value,
+                            txtLight.value.toFloat(),
+                            bitmap.value!!
+                        )
+                        navController.navigate(route = BottomBarScreen.ListScreen.route)
+                    } else {
+                        Toast.makeText(context,"Please fill all the information", Toast.LENGTH_SHORT).show()
+                    }
                 })
         }
     }
