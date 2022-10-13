@@ -118,8 +118,9 @@ fun ShowMemoryCard(
     ) {
         Icon(
             painter = painterResource(id = R.drawable.ic_trashbin),
+            tint = MaterialTheme.colors.secondary,
             contentDescription = "delete",
-            Modifier
+            modifier = Modifier
                 .size(32.dp, 32.dp)
                 .padding(start = 340.dp, top = 5.dp)
                 .clickable {
@@ -171,10 +172,11 @@ fun ShowMemoryCard(
                         .padding(start = 10.dp)
                 ) {
                     Row(Modifier.fillMaxWidth()) {
-                        Image(
+                        Icon(
                             painter = painterResource(id = R.drawable.ic_explore),
+                            tint = MaterialTheme.colors.secondary,
                             contentDescription = null,
-                            Modifier
+                            modifier = Modifier
                                 .size(25.dp, 25.dp)
                                 .padding(top = 2.dp, end = 4.dp)
                         )
@@ -185,9 +187,10 @@ fun ShowMemoryCard(
                     }
                     Spacer(modifier = Modifier.height(5.dp))
                     Row(Modifier.fillMaxWidth()) {
-                        Image(
-                            painterResource(R.drawable.ic_calendar), contentDescription = null,
-                            Modifier
+                        Icon(
+                            painter = painterResource(R.drawable.ic_calendar), contentDescription = null,
+                            tint = MaterialTheme.colors.secondary,
+                            modifier = Modifier
                                 .size(25.dp, 25.dp)
                                 .padding(bottom = 4.dp, end = 3.dp)
                         )
@@ -195,10 +198,11 @@ fun ShowMemoryCard(
                     }
                     Spacer(modifier = Modifier.height(5.dp))
                     Row(Modifier.fillMaxWidth()) {
-                        Image(
+                        Icon(
                             painter = painterResource(id = R.drawable.ic_light),
+                            tint = MaterialTheme.colors.secondary,
                             contentDescription = null,
-                            Modifier
+                            modifier = Modifier
                                 .size(25.dp, 25.dp)
                                 .padding(bottom = 3.dp)
                         )

@@ -9,5 +9,7 @@ val Teal200 = Color(0xFF03DAC5)
 val LightGray = Color(0xFFEEEEEE)
 val White1 = Color(0xFFF8F9FA)
 
+val Black1 = Color(0xFF343A40)
+val DarkGray = Color(0xFF495057)
 
 val IconColor = Color(0xFF495057)
