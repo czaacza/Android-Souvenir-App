@@ -1,8 +1,6 @@
 package fi.metropolia.project.souvenirapp.view.navigation
 
 
-import android.util.Log
-import android.widget.Toast
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
@@ -21,6 +19,7 @@ import fi.metropolia.project.souvenirapp.view.screens.DetailsScreen
 import fi.metropolia.project.souvenirapp.view.screens.ListScreen
 import fi.metropolia.project.souvenirapp.view.screens.MapScreen
 import fi.metropolia.project.souvenirapp.viewmodel.*
+import kotlin.math.log
 
 const val SLIDE_DURATION_MS = 300
 const val FADE_DURATION_MS = 200
@@ -157,7 +156,7 @@ fun BottomBarNavigation(
             )
         }
         composable(
-            route = "details",
+            route = "details/{jsonmemory}",
             enterTransition = {
                 slideInVertically(
                     initialOffsetY = { fullHeight -> 2 * fullHeight },
@@ -165,7 +164,7 @@ fun BottomBarNavigation(
                 )
             }
         ) {
-            DetailsScreen()
+            navBackStackEntry-> DetailsScreen(navBackStackEntry.arguments?.getString("jsonmemory"),navController,memoryDatabaseViewModel)
         }
     }
 }

@@ -28,6 +28,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.google.gson.Gson
 import fi.metropolia.project.souvenirapp.R
 import fi.metropolia.project.souvenirapp.model.data.Memory
 import fi.metropolia.project.souvenirapp.view.components.BottomBarScreen
@@ -110,7 +111,8 @@ fun ShowMemoryCard(
             .fillMaxWidth()
             .padding(10.dp, 20.dp, 10.dp, 0.dp)
             .clickable {
-                navController.navigate("details")
+                var jsonmemory = Gson().toJson(memory)
+                navController.navigate("details/${jsonmemory}")
             },
         shape = MaterialTheme.shapes.small,
     ) {
