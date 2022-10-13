@@ -151,15 +151,19 @@ fun BottomBarNavigation(
             )
         }
         composable(
-            route = "details/{jsonmemory}",
+            route = "details/{memory}",
             enterTransition = {
                 slideInVertically(
                     initialOffsetY = { fullHeight -> 2 * fullHeight },
                     animationSpec = tween(SLIDE_DURATION_MS)
                 )
             }
-        ) {
-            navBackStackEntry-> DetailsScreen(navBackStackEntry.arguments?.getString("jsonmemory"),navController,memoryDatabaseViewModel)
+        ) { navBackStackEntry ->
+            DetailsScreen(
+                navBackStackEntry.arguments?.getString("memory"),
+                navController,
+                memoryDatabaseViewModel
+            )
         }
     }
 }

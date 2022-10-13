@@ -3,6 +3,7 @@ package fi.metropolia.project.souvenirapp.view.screens
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -111,8 +112,8 @@ fun ShowMemoryCard(
             .fillMaxWidth()
             .padding(10.dp, 20.dp, 10.dp, 0.dp)
             .clickable {
-                var jsonmemory = Gson().toJson(memory)
-                navController.navigate("details/${jsonmemory}")
+                var id = memory.id
+                navController.navigate("details/${id}")
             },
         shape = MaterialTheme.shapes.small,
     ) {
@@ -188,7 +189,8 @@ fun ShowMemoryCard(
                     Spacer(modifier = Modifier.height(5.dp))
                     Row(Modifier.fillMaxWidth()) {
                         Icon(
-                            painter = painterResource(R.drawable.ic_calendar), contentDescription = null,
+                            painter = painterResource(R.drawable.ic_calendar),
+                            contentDescription = null,
                             tint = MaterialTheme.colors.secondary,
                             modifier = Modifier
                                 .size(25.dp, 25.dp)

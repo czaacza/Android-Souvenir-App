@@ -1,15 +1,16 @@
 package fi.metropolia.project.souvenirapp.view.screens
 
 import android.util.Log
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -20,18 +21,31 @@ import androidx.navigation.NavController
 import com.google.gson.Gson
 import fi.metropolia.project.souvenirapp.R
 import fi.metropolia.project.souvenirapp.model.data.Memory
-import fi.metropolia.project.souvenirapp.model.data.MemoryDatabase
 import fi.metropolia.project.souvenirapp.view.components.BottomBarScreen
 import fi.metropolia.project.souvenirapp.viewmodel.MemoryDatabaseViewModel
 
 @Composable
-fun DetailsScreen(jsonmemory: String?,
-                  navController:NavController,
-                  memoryDatabaseViewModel:MemoryDatabaseViewModel){
-
-    Log.i("DBG", "$jsonmemory")
-    var memory = Gson().fromJson(jsonmemory, Memory::class.java)
-
+fun DetailsScreen(
+    memoryId: String?,
+    navController: NavController,
+    memoryDatabaseViewModel: MemoryDatabaseViewModel
+) {
+    val memories = memoryDatabaseViewModel.memories.observeAsState()
+    var chosenMemory: Memory? = null
+    var isMemoryFound = remember {
+        mutableStateOf(false)
+    }
+    if (memoryId != null && !isMemoryFound.value) {
+        if (memories.value != null) {
+            chosenMemory = memories.value!!.find { memory ->
+                memory.id.toString() == memoryId
+            }
+        }
+        isMemoryFound.value = true
+    }
+    if (chosenMemory == null) {
+        return
+    }
     Box() {
         Icon(
             painter = painterResource(id = R.drawable.ic_back),
@@ -61,10 +75,10 @@ fun DetailsScreen(jsonmemory: String?,
         )
         /*IMAGE*/
 
-        Card(){
+        Card() {
             Text(text = "DESCRIPTION")
         }
-        Card(){
+        Card() {
             Text(text = "LIGHT,LOC,DATE")
         }
     }
