@@ -4,7 +4,7 @@ import androidx.room.*
 
 @Dao
 interface MemoryDao {
-    @Query("SELECT * FROM memory")
+    @Query("SELECT * FROM Memory")
     fun getAll(): List<Memory>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -16,6 +16,6 @@ interface MemoryDao {
     @Update
     suspend fun update(memory: Memory)
 
-    @Query("DELETE FROM memory")
+    @Query("DELETE FROM Memory")
     suspend fun clearTable()
 }

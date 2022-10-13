@@ -1,17 +1,10 @@
 package fi.metropolia.project.souvenirapp.model
 
-import android.content.ContentResolver
 import android.content.Context
-import android.content.res.AssetManager
-import android.graphics.BitmapFactory
 import android.net.Uri
-import android.provider.MediaStore
-import android.util.Log
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.asImageBitmap
 import fi.metropolia.project.souvenirapp.model.data.Memory
 import java.io.File
 

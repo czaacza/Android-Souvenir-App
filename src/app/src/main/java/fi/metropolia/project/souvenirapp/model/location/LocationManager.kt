@@ -91,29 +91,29 @@ class LocationManager(val activityContext: Activity) {
             )
         }
 
-        if ((Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission(
-                activityContext,
-                android.Manifest.permission.ACCESS_BACKGROUND_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED)
-        ) {
-            ActivityCompat.requestPermissions(
-                activityContext,
-                arrayOf(android.Manifest.permission.ACCESS_BACKGROUND_LOCATION),
-                0
-            )
-        }
-
-        if ((Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission(
-                activityContext,
-                android.Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED)
-        ) {
-            ActivityCompat.requestPermissions(
-                activityContext,
-                arrayOf(android.Manifest.permission.ACCESS_BACKGROUND_LOCATION),
-                0
-            )
-        }
+//        if ((Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission(
+//                activityContext,
+//                android.Manifest.permission.ACCESS_BACKGROUND_LOCATION
+//            ) != PackageManager.PERMISSION_GRANTED)
+//        ) {
+//            ActivityCompat.requestPermissions(
+//                activityContext,
+//                arrayOf(android.Manifest.permission.ACCESS_BACKGROUND_LOCATION),
+//                0
+//            )
+//        }
+//
+//        if ((Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission(
+//                activityContext,
+//                android.Manifest.permission.ACCESS_COARSE_LOCATION
+//            ) != PackageManager.PERMISSION_GRANTED)
+//        ) {
+//            ActivityCompat.requestPermissions(
+//                activityContext,
+//                arrayOf(android.Manifest.permission.ACCESS_BACKGROUND_LOCATION),
+//                0
+//            )
+//        }
     }
 
 }

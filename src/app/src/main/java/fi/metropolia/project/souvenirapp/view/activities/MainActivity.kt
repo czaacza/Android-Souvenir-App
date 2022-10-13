@@ -26,7 +26,6 @@ class MainActivity : ComponentActivity() {
     private lateinit var mapViewModel: MapViewModel
     private lateinit var memoryDatabaseViewModel: MemoryDatabaseViewModel
     private lateinit var cameraViewModel: CameraViewModel
-
     private lateinit var sensorViewModel: LightSensorViewModel
     private lateinit var sensorManager: SensorManager
     private lateinit var locationViewModel: LocationViewModel
@@ -40,9 +39,6 @@ class MainActivity : ComponentActivity() {
         sensorViewModel = LightSensorViewModel(sensorManager)
         locationViewModel = LocationViewModel(application, this)
 
-
-        memoryDatabaseViewModel.clear()
-
         setContent {
             mapViewModel = MapViewModel(application, getMap(context = this), locationViewModel)
 
@@ -54,7 +50,6 @@ class MainActivity : ComponentActivity() {
                     sensorViewModel,
                     locationViewModel,
                 )
-                trysensor(sensorManager)
             }
         }
     }

@@ -1,16 +1,12 @@
 package fi.metropolia.project.souvenirapp.viewmodel
 
 import android.app.Application
-import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.preference.PreferenceManager
-import fi.metropolia.project.souvenirapp.R
 import fi.metropolia.project.souvenirapp.model.data.Memory
-import fi.metropolia.project.souvenirapp.view.activities.MainActivity
 import fi.metropolia.project.souvenirapp.view.screens.getMap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -46,17 +42,19 @@ class MapViewModel(
     }
 
     fun setMarkers(memories: List<Memory>) {
-        memories.forEach { memory ->
-            val marker = Marker(map)
-            marker.position = locationViewModel.getGeoPoint(memory.location)
-            marker.title = memory.title
-            marker.subDescription =
-                "${memory.description}\n" +
-                        "${memory.date}\n" +
-                        "${memory.location}"
+        viewModelScope.launch(Dispatchers.IO) {
+            memories.forEach { memory ->
+                if(memory.location == ""){
+                    return@forEach
+                }
+                val marker = Marker(map)
+                marker.position = locationViewModel.getGeoPoint(memory.location)
+                marker.title = memory.title
+                marker.subDescription = memory.location
 
-            marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-            map.overlays.add(marker)
+                marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+                map.overlays.add(marker)
+            }
         }
     }
 

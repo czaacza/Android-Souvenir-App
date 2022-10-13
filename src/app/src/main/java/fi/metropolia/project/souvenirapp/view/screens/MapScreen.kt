@@ -14,7 +14,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
 import fi.metropolia.project.souvenirapp.R
-import fi.metropolia.project.souvenirapp.view.theme.LightBlueTint
 import fi.metropolia.project.souvenirapp.viewmodel.MapViewModel
 import fi.metropolia.project.souvenirapp.viewmodel.MemoryDatabaseViewModel
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
@@ -28,24 +27,6 @@ fun MapScreen(
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        TopAppBar(
-            modifier = Modifier
-                .fillMaxWidth(),
-            backgroundColor = LightBlueTint
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxSize(),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "MAP",
-                    style = MaterialTheme.typography.h1,
-                    color = MaterialTheme.colors.secondary,
-                )
-            }
-        }
         Box(modifier = Modifier.fillMaxHeight()) {
             AndroidView({ mapViewModel.map })
         }
