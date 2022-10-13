@@ -32,10 +32,14 @@ fun MainScreen(
     locationViewModel: LocationViewModel,
 ) {
     val navController = rememberAnimatedNavController()
+
+    val currentStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = currentStackEntry?.destination
+
+    Log.d("DBG", "current: ${currentDestination?.route}")
     Scaffold(
         topBar = {
-            val currentStackEntry by navController.currentBackStackEntryAsState()
-            val currentDestination = currentStackEntry?.destination
+
             var topAppText = ""
 
             when (currentDestination?.route) {
@@ -48,7 +52,7 @@ fun MainScreen(
                 BottomBarScreen.CreateMemoryScreen.route -> {
                     topAppText = "NEW MEMORY"
                 }
-                "details" -> {
+                "details/{memory}" -> {
                     topAppText = "MEMORY DETAILS"
                 }
             }
