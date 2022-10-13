@@ -1,6 +1,7 @@
 package fi.metropolia.project.souvenirapp.view.navigation
 
 
+import android.util.Log
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
@@ -19,7 +20,7 @@ import fi.metropolia.project.souvenirapp.view.screens.DetailsScreen
 import fi.metropolia.project.souvenirapp.view.screens.ListScreen
 import fi.metropolia.project.souvenirapp.view.screens.MapScreen
 import fi.metropolia.project.souvenirapp.viewmodel.*
-import kotlin.math.log
+
 
 const val SLIDE_DURATION_MS = 300
 const val FADE_DURATION_MS = 200
@@ -59,37 +60,8 @@ fun BottomBarNavigation(
                 fadeOut(animationSpec = tween(FADE_DURATION_MS))
             }
         ) {
-            val isMapInitialized = remember { mutableStateOf(false) }
-            val isMapCentered = remember { mutableStateOf(false) }
-            val areMarkersSet = remember { mutableStateOf(false) }
 
-//          INITIALIZE THE MAP
-            if (!isMapInitialized.value) {
-                mapViewModel.setMap()
-                mapViewModel.initialize()
-                isMapInitialized.value = true
-            }
-
-//          CENTRE THE MAP
-            val currentlocationPoint = locationViewModel.locationPoint.observeAsState()
-
-            locationViewModel.startLocationTracking()
-            if (currentlocationPoint.value != null && !isMapCentered.value
-            ) {
-                mapViewModel.centerMap(currentlocationPoint.value!!)
-                isMapCentered.value = true
-                locationViewModel.stopLocationTracking()
-            }
-
-//          SET MARKERS
-            val memories = memoryDatabaseViewModel.memories.observeAsState()
-
-            if (memories.value != null && !areMarkersSet.value) {
-                mapViewModel.setMarkers(memories.value!!)
-                areMarkersSet.value = true
-            }
-
-            MapScreen(mapViewModel)
+            MapScreen(mapViewModel, locationViewModel, memoryDatabaseViewModel)
         }
         composable(
             route = BottomBarScreen.ListScreen.route,

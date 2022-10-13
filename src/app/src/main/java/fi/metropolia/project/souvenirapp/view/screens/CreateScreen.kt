@@ -188,6 +188,7 @@ fun CreateScreen(
                             bitmap.value!!
                         )
                         navController.navigate(route = BottomBarScreen.ListScreen.route)
+//                        locationViewModel.stopLocationTracking()
                     } else {
                         Toast.makeText(context,"Please fill all the information", Toast.LENGTH_SHORT).show()
                     }

@@ -7,6 +7,7 @@ import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,21 +32,24 @@ fun DetailsScreen(
     memoryDatabaseViewModel: MemoryDatabaseViewModel
 ) {
     val memories = memoryDatabaseViewModel.memories.observeAsState()
-    var chosenMemory: Memory? = null
+    var chosenMemory= remember {
+        mutableStateOf<Memory?>(null)
+    }
     var isMemoryFound = remember {
         mutableStateOf(false)
     }
     if (memoryId != null && !isMemoryFound.value) {
         if (memories.value != null) {
-            chosenMemory = memories.value!!.find { memory ->
+            chosenMemory.value = memories.value!!.find { memory ->
                 memory.id.toString() == memoryId
             }
         }
         isMemoryFound.value = true
     }
-    if (chosenMemory == null) {
+    if (chosenMemory.value == null) {
         return
     }
+    Log.d("DBG", "${chosenMemory.value}")
     Box() {
         Icon(
             painter = painterResource(id = R.drawable.ic_back),

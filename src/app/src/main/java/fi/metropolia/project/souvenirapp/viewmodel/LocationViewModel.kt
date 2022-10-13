@@ -16,7 +16,7 @@ class LocationViewModel(application: Application, activity: Activity) :
     private val locationManager = LocationManager(activity)
 
     val locationPoint = locationManager.locationPoint
-    var isLocationTracked = MutableLiveData(false)
+    private var isLocationTracked = MutableLiveData(false)
 
     fun startLocationTracking() {
         locationManager.startLocationTracking()
