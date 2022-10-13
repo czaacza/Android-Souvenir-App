@@ -63,7 +63,7 @@ class MemoryDatabaseViewModel(application: Application) : AndroidViewModel(appli
         light: Float,
         bitmap: Bitmap,
     ) {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch(Dispatchers.Main) {
             val file = getFileFromBitmap(bitmap)
             val fileAbsolutePath = file.absolutePath
 

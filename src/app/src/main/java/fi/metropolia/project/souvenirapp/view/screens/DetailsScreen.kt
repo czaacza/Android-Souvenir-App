@@ -10,6 +10,7 @@ import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -59,6 +60,7 @@ fun DetailsScreen(
     if (chosenMemory.value == null) {
         return
     }
+
     if (chosenMemory.value!!.imageUri != null) {
         coroutineScope.launch(Dispatchers.Main) {
             bitmap.value = BitmapFactory.decodeFile(chosenMemory.value!!.imageUri)

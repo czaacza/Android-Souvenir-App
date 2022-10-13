@@ -1,6 +1,7 @@
 package fi.metropolia.project.souvenirapp.viewmodel
 
 import android.R.attr.bitmap
+import android.annotation.SuppressLint
 import android.app.Application
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -13,9 +14,13 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.core.content.FileProvider
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.io.File
 
 
@@ -26,8 +31,8 @@ class CameraViewModel(application: Application) : AndroidViewModel(application) 
     private val isLaunched = MutableLiveData(false)
 
     private val imageFile: File
-    val imageUri: Uri
-    val imageAbsolutePath: String
+    private val imageUri: Uri
+    private val imageAbsolutePath: String
 
     init {
         imageFile = createFileForImage("createScreenImage")
@@ -35,8 +40,10 @@ class CameraViewModel(application: Application) : AndroidViewModel(application) 
         imageAbsolutePath = imageFile.absolutePath
     }
 
+    @SuppressLint("CoroutineCreationDuringComposition")
     @Composable
     fun SetLauncher() {
+        val coroutineScope = rememberCoroutineScope()
         val isLaunchedState = isLaunched.observeAsState()
         val launcher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) {
             if (it) {
@@ -46,8 +53,10 @@ class CameraViewModel(application: Application) : AndroidViewModel(application) 
             }
         }
         if (isLaunchedState.value == true) {
-            launcher.launch(imageUri)
-            isLaunched.value = false
+            coroutineScope.launch(Dispatchers.Default) {
+                launcher.launch(imageUri)
+                isLaunched.postValue(false)
+            }
         }
     }
 
@@ -55,12 +64,12 @@ class CameraViewModel(application: Application) : AndroidViewModel(application) 
         isLaunched.value = true;
     }
 
-    fun createFileForImage(fileName: String): File {
+    private fun createFileForImage(fileName: String): File {
         val filePath = app.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         return File.createTempFile(fileName, ".jpg", filePath)
     }
 
-    fun getImgUri(imgFile: File): Uri {
+    private fun getImgUri(imgFile: File): Uri {
         val photoURI: Uri =
             FileProvider.getUriForFile(
                 app, "fi.metropolia.project.souvenirapp.fileprovider", imgFile

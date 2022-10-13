@@ -9,6 +9,7 @@ import androidx.preference.PreferenceManager
 import fi.metropolia.project.souvenirapp.model.data.Memory
 import fi.metropolia.project.souvenirapp.view.screens.getMap
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
@@ -32,9 +33,12 @@ class MapViewModel(
     }
 
     fun initialize() {
-        map.controller.setZoom(9.0)
-        map.setMultiTouchControls(true)
-        map.zoomController.setVisibility(CustomZoomButtonsController.Visibility.NEVER)
+        viewModelScope.launch(Dispatchers.Main) {
+            map.controller.setZoom(9.0)
+            map.setMultiTouchControls(true)
+            map.zoomController.setVisibility(CustomZoomButtonsController.Visibility.NEVER)
+        }
+
     }
 
     fun centerMap(centrePoint: GeoPoint) {
@@ -42,9 +46,9 @@ class MapViewModel(
     }
 
     fun setMarkers(memories: List<Memory>) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.Main) {
             memories.forEach { memory ->
-                if(memory.location == ""){
+                if (memory.location == "") {
                     return@forEach
                 }
                 val marker = Marker(map)
