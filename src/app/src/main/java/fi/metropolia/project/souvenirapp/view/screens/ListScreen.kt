@@ -3,7 +3,6 @@ package fi.metropolia.project.souvenirapp.view.screens
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -29,7 +28,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.google.gson.Gson
 import fi.metropolia.project.souvenirapp.R
 import fi.metropolia.project.souvenirapp.model.data.Memory
 import fi.metropolia.project.souvenirapp.view.components.BottomBarScreen
