@@ -36,7 +36,6 @@ fun BottomBarNavigation(
     locationViewModel: LocationViewModel,
     navigationViewModel: NavigationViewModel
 ) {
-    val context = LocalContext.current
     val currentStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = currentStackEntry?.destination
     val lastDestinationRoute = navigationViewModel.lastDestinationRoute.observeAsState()
@@ -125,10 +124,6 @@ fun BottomBarNavigation(
                         animationSpec = tween(SLIDE_DURATION_MS)
                     )
                 } else {
-//                    slideOutVertically(
-//                        targetOffsetY = { fullHeight -> 20 },
-//                        animationSpec = tween(300)
-//                    )
                     fadeOut(animationSpec = tween(FADE_DURATION_MS))
                 }
             },
