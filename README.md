@@ -23,5 +23,5 @@ UI Structure of our application is based on packages containing specific parts o
 - Julian Marc ([JulianMarc](https://github.com/JulianMarc))
 - Hugo Mater ([hugo66297](https://github.com/hugo66297))
 
-Application project has been created as a part of Sensor Mobile Application course at Metropolia UAS Helsinki
+Application project has been created as a part of Sensor Mobile Application course at Metropolia UAS Helsinki.
 
