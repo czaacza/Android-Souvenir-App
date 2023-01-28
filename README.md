@@ -4,8 +4,8 @@ Android application helping people to keep their memories from visited places.
 
 ## Sample screens:
 <p float="left">
-  <img src="https://github.com/czaacza/Android-Souvenir-App/blob/master/img/Screenshot_20230128-232053_Souvenir%20App.jpg" width="250px"/> 
   <img src="https://github.com/czaacza/Android-Souvenir-App/blob/master/img/Screenshot_20230128-232104_Souvenir%20App.jpg" width="250px"/> 
+  <img src="https://github.com/czaacza/Android-Souvenir-App/blob/master/img/Screenshot_20230128-232053_Souvenir%20App.jpg" width="250px"/> 
   <img src="https://github.com/czaacza/Android-Souvenir-App/blob/master/img/Screenshot_20230128-232109_Souvenir%20App.jpg" width="250px"/> 
 </p>
 
