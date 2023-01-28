@@ -12,10 +12,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.core.content.res.ResourcesCompat
 import androidx.preference.PreferenceManager
 import fi.metropolia.project.souvenirapp.R
-import fi.metropolia.project.souvenirapp.model.logMemories
 import fi.metropolia.project.souvenirapp.view.screens.getMap
 import fi.metropolia.project.souvenirapp.view.theme.SouvenirAppTheme
-import fi.metropolia.project.souvenirapp.model.trysensor
 import fi.metropolia.project.souvenirapp.view.MainScreen
 import fi.metropolia.project.souvenirapp.viewmodel.*
 import org.osmdroid.config.Configuration
