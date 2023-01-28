@@ -2,15 +2,17 @@
 
 Android application helping people to keep their memories from visited places.
 
+## Sample screens:
+<p float="left">
+  <img src="https://github.com/czaacza/Android-Souvenir-App/blob/master/img/Screenshot_20230128-232053_Souvenir%20App.jpg" width="250px"/> 
+  <img src="https://github.com/czaacza/Android-Souvenir-App/blob/master/img/Screenshot_20230128-232104_Souvenir%20App.jpg" width="250px"/> 
+  <img src="https://github.com/czaacza/Android-Souvenir-App/blob/master/img/Screenshot_20230128-232109_Souvenir%20App.jpg" width="250px"/> 
+</p>
+
+
 ## App utilities:
 - Creating and storing memories each including a picture, title, description and location.
 - Showing memories on a map based on their location.
-
-<p float="left">
-  <img src="https://github.com/czaacza/Android-Souvenir-App/blob/master/img/Screenshot_20230128-232053_Souvenir%20App.jpg" width="280px"/> 
-  <img src="https://github.com/czaacza/Android-Souvenir-App/blob/master/img/Screenshot_20230128-232104_Souvenir%20App.jpg" width="280px"/> 
-  <img src="https://github.com/czaacza/Android-Souvenir-App/blob/master/img/Screenshot_20230128-232109_Souvenir%20App.jpg" width="280px"/> 
-</p>
 
 ## App Architecture
 The application will be built in MVVM architecture. This means that it is structured into three main modules:
