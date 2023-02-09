@@ -1,6 +1,6 @@
 # Android-Souvenir-App
 
-Android application helping people to keep their memories from visited places.
+Android application helping people to collect and view memories from the visited places.
 
 ## Sample screens:
 <p float="left">
